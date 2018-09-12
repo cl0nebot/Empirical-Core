@@ -225,7 +225,10 @@ export class QuestionComponent extends React.Component<QuestionProps, QuestionSt
     }
 
     renderConceptExplanation(): JSX.Element|void {
-      const latestAttempt:Response|undefined = this.getLatestAttempt(this.currentQuestion().attempts);
+      const currentQuestion = this.currentQuestion();
+      const latestAttempt: Response|undefined = this.getLatestAttempt(currentQuestion.attempts);
+      const modelConceptUID: string|undefined = currentQuestion.modelConceptUID;
+      const concept_uid: string|undefined = currentQuestion.concept_uid
       if (latestAttempt && !latestAttempt.optimal) {
         if (latestAttempt.concept_results) {
           const conceptID = this.getNegativeConceptResultForResponse(latestAttempt.concept_results);
@@ -235,13 +238,13 @@ export class QuestionComponent extends React.Component<QuestionProps, QuestionSt
               return <ConceptExplanation {...data} />;
             }
           }
-        } else if (this.currentQuestion() && this.currentQuestion().modelConceptUID) {
-          const dataF = this.props.conceptsFeedback.data[this.currentQuestion().modelConceptUID];
+        } else if (modelConceptUID) {
+          const dataF = this.props.conceptsFeedback.data[modelConceptUID];
           if (dataF) {
             return <ConceptExplanation {...dataF} />;
           }
-        } else if (this.currentQuestion().concept_uid) {
-          const data = this.props.conceptsFeedback.data[this.currentQuestion().concept_uid];
+        } else if (concept_uid) {
+          const data = this.props.conceptsFeedback.data[concept_uid];
           if (data) {
             return <ConceptExplanation {...data} />;
           }

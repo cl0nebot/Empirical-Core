@@ -71,8 +71,7 @@ export class PlayGrammarContainer extends React.Component<PlayGrammarContainerPr
     }
 
     componentWillReceiveProps(nextProps: PlayGrammarContainerProps) {
-      console.log(JSON.stringify(nextProps))
-      if (nextProps.grammarActivities.hasreceiveddata && !nextProps.session.hasreceiveddata && !nextProps.session.error) {
+      if (nextProps.grammarActivities.hasreceiveddata && !nextProps.session.hasreceiveddata && !nextProps.session.error && nextProps.grammarActivities.currentActivity) {
         const concepts = nextProps.grammarActivities.currentActivity.concepts
         this.props.dispatch(startListeningToQuestions(concepts))
       }
@@ -118,8 +117,8 @@ export class PlayGrammarContainer extends React.Component<PlayGrammarContainerPr
         },
         (err, httpResponse, body) => {
           if (httpResponse && httpResponse.statusCode === 200) {
-            const sessionID = getParameterByName('student', window.location.href)
-            document.location.href = `${process.env.EMPIRICAL_BASE_URL}/activity_sessions/${sessionID}`;
+            const newSessionID = getParameterByName('student', window.location.href)
+            document.location.href = `${process.env.EMPIRICAL_BASE_URL}/activity_sessions/${newSessionID}`;
             this.setState({ saved: true, });
           } else {
             this.setState({
@@ -153,7 +152,7 @@ export class PlayGrammarContainer extends React.Component<PlayGrammarContainerPr
       );
     }
 
-    checkAnswer(response:string, question:Question, responses:Array<Response>, isFirstAttempt:Boolean) {
+    checkAnswer(response:string, question:Question, responses:Array<Response>, isFirstAttempt:boolean) {
       this.props.dispatch(checkAnswer(response, question, responses, isFirstAttempt))
     }
 

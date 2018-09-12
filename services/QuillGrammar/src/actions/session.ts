@@ -7,7 +7,7 @@ import { Question } from '../interfaces/questions'
 import { SessionState } from '../reducers/sessionReducer'
 import { checkGrammarQuestion, Response } from 'quill-marking-logic'
 import { shuffle } from '../helpers/shuffle';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 export const updateSessionOnFirebase = (sessionID: string, session: SessionState) => {
   const cleanedSession = _.pickBy(session)
@@ -48,7 +48,7 @@ export const startListeningToQuestions = (concepts: any) => {
         }
       })
 
-      const arrayOfQuestions = []
+      const arrayOfQuestions: any[] = []
       Object.keys(questionsForConcepts).forEach(conceptUID => {
         const shuffledQuestionArray = shuffle(questionsForConcepts[conceptUID])
         const numberOfQuestions = concepts[conceptUID].quantity
@@ -66,7 +66,7 @@ export const startListeningToQuestions = (concepts: any) => {
   }
 }
 
-export const checkAnswer = (response:string, question:Question, responses:Array<Response>, isFirstAttempt:Boolean) => {
+export const checkAnswer = (response: string, question: Question, responses: Array<Response>, isFirstAttempt: boolean) => {
   return dispatch => {
     const questionUID: string = question.uid
     const responseObj = checkGrammarQuestion(questionUID, response, responses)

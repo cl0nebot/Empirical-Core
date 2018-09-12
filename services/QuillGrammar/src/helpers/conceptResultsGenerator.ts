@@ -2,44 +2,42 @@ import { ConceptResult } from 'quill-marking-logic'
 import * as _ from 'lodash'
 import { Question, FormattedConceptResult } from '../interfaces/questions'
 
-export function getConceptResultsForQuestion(question: Question): FormattedConceptResult[]|undefined {
+export function getConceptResultsForQuestion(question: Question): FormattedConceptResult[] {
   const prompt = question.prompt.replace(/(<([^>]+)>)/ig, '').replace(/&nbsp;/ig, '');
-  if (question.attempts) {
-    const answer = question.attempts[0].text;
-    let conceptResults: ConceptResult[]|never = [];
-    if (question.attempts[0]) {
-      conceptResults = question.attempts[0].concept_results || question.attempts[0].conceptResults || [];
-    } else {
-      conceptResults = [];
-    }
-    conceptResults = Array.isArray(conceptResults) ? conceptResults : _.values(conceptResults)
-    if (conceptResults.length === 0) {
-      conceptResults = [{
-        conceptUID: question.concept_uid,
-        correct: false,
-      }];
-    } else if (!conceptResults.find(cr => cr.conceptUID === question.concept_uid )) {
-      conceptResults.push({
-        conceptUID: question.concept_uid,
-        correct: false,
-      })
-    }
-    const directions = question.instructions;
-    return conceptResults.map((conceptResult: ConceptResult) => {
-      return {
-        concept_uid: conceptResult.conceptUID,
-        question_type: 'sentence-writing',
-        metadata: {
-          correct: conceptResult.correct ? 1 : 0,
-          directions,
-          prompt,
-          answer,
-          question_uid:  question.uid
-        },
-      }});
+  const attempts = question.attempts ? question.attempts : [];
+  const answer = attempts[0].text;
+  let unformattedConceptResults;
+  if (attempts[0]) {
+    unformattedConceptResults = attempts[0].concept_results || attempts[0].conceptResults || [];
   } else {
-    return undefined
+    unformattedConceptResults = [];
   }
+  let conceptResults: ConceptResult[]|never  = Array.isArray(unformattedConceptResults) ? unformattedConceptResults : _.values(unformattedConceptResults)
+  if (conceptResults.length === 0) {
+    conceptResults = [{
+      conceptUID: question.concept_uid,
+      correct: false,
+    }];
+  } else if (!conceptResults.find(cr => cr.conceptUID === question.concept_uid )) {
+    conceptResults.push({
+      conceptUID: question.concept_uid,
+      correct: false,
+    })
+  }
+  const directions = question.instructions;
+  return conceptResults.map((conceptResult: ConceptResult) => {
+    return {
+      concept_uid: conceptResult.conceptUID,
+      question_type: 'sentence-writing',
+      metadata: {
+        correct: conceptResult.correct ? 1 : 0,
+        directions,
+        prompt,
+        answer,
+        question_uid:  question.uid
+      },
+    }
+  });
 }
 
 export function getNestedConceptResultsForAllQuestions(questions: Question[]) {
@@ -56,7 +54,7 @@ export function embedQuestionNumbers(nestedConceptResultArray: FormattedConceptR
   });
 }
 
-export function getConceptResultsForAllQuestions(questions: Question[]):FormattedConceptResult[] {
+export function getConceptResultsForAllQuestions(questions: Question[]): FormattedConceptResult[] {
   const nested = getNestedConceptResultsForAllQuestions(questions);
   const withKeys = embedQuestionNumbers(nested);
   return [].concat.apply([], withKeys); // Flatten array

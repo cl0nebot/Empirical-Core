@@ -77,7 +77,7 @@ class adminContainer extends React.Component<AdminContainerProps> {
   }
 }
 
-function select(state) {
+function select(state: any) {
   return {
   };
 }
@@ -87,4 +87,4 @@ function mergeProps(stateProps: Object, dispatchProps: Object, ownProps: Object)
   return {...ownProps, ...stateProps, ...dispatchProps}
 }
 
-export default withRouter(connect(select, dispatch => ({dispatch}), mergeProps)(adminContainer));
+export default withRouter(connect(select, dispatch => ({dispatch}), mergeProps)(adminContainer) as any);

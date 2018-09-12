@@ -6,17 +6,20 @@ import { initStoreAction } from "../actions/actions";
 import { rootReducer } from "../reducers/rootReducer";
 
 export interface IState {
-    questions: any;
     grammarActivities: any;
-}
+    session: any;
+    questions: any;
+    concepts: any;
+    display: any;
+    responses: any;
+    massEdit: any;
+    filters: any;
+    conceptsFeedback: any;
+};
 
 export const initStore = () => {
     return (dispatch: Dispatch<{}>) => {
-        const initialState = {
-          questions: {},
-          grammarActivities: {}
-        }
-        return dispatch(initStoreAction(initialState));
+        return dispatch(initStoreAction());
     };
 };
 

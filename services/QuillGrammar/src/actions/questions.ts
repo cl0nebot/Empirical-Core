@@ -1,5 +1,5 @@
 import * as request from 'request'
-import Pusher from 'pusher-js';
+import * as Pusher from 'pusher-js';
 import { push } from 'react-router-redux';
 import rootRef from '../firebase';
 import { ActionTypes } from './actionTypes'
@@ -7,6 +7,10 @@ const questionsRef = rootRef.child('questions')
 import { Questions, Question } from '../interfaces/questions'
 import * as responseActions from './responses'
 import { Response, ConceptResult } from 'quill-marking-logic'
+
+interface SavedResponse extends Response {
+  id: number;
+}
 
 export const startListeningToQuestions = () => {
   return (dispatch:Function) => {
@@ -21,13 +25,13 @@ export const startListeningToQuestions = () => {
   }
 }
 
-export const getGradedResponsesWithCallback = (questionID:string, callback:Function) => {
+export const getGradedResponsesWithCallback = (questionID: string, callback: Function) => {
   request(`${process.env.QUILL_CMS}/questions/${questionID}/responses`, (error, response, body) => {
     if (error) {
       console.log('error:', error); // Print the error if one occurred
     }
-    const bodyToObj: {[key:string]: Response} = {};
-    JSON.parse(body).forEach((resp: Response) => {
+    const bodyToObj: {[key: string]: SavedResponse} = {};
+    JSON.parse(body).forEach((resp: SavedResponse) => {
       bodyToObj[resp.id] = resp;
       if (typeof resp.concept_results === 'string') {
         resp.concept_results = JSON.parse(resp.concept_results);

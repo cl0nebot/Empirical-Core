@@ -3,6 +3,7 @@ import rootRef from '../firebase';
 import { ActionTypes } from './actionTypes'
 const activitiesRef = rootRef.child('grammarActivities')
 import { GrammarActivities, GrammarActivity } from '../interfaces/grammarActivities'
+import * as _ from 'lodash';
 
 export const startListeningToActivities = () => {
   return (dispatch:Function) => {
@@ -19,8 +20,8 @@ export const startListeningToActivities = () => {
 }
 
 export const startListeningToActivity = (activityUID: string) => {
-  return (dispatch:Function) => {
-    activitiesRef.child(activityUID).on('value', (snapshot:any) => {
+  return (dispatch: Function) => {
+    activitiesRef.child(activityUID).on('value', (snapshot: any) => {
       const activity: GrammarActivity = snapshot.val()
       if (activity) {
         dispatch({ type: ActionTypes.RECEIVE_GRAMMAR_ACTIVITY_DATA, data: activity, });
@@ -28,7 +29,6 @@ export const startListeningToActivity = (activityUID: string) => {
         dispatch({ type: ActionTypes.NO_GRAMMAR_ACTIVITY_FOUND })
       }
     });
-
   }
 }
 
@@ -36,11 +36,11 @@ export const toggleNewLessonModal = () => {
   return { type: ActionTypes.TOGGLE_NEW_LESSON_MODAL, };
 }
 
-export const submitNewLesson = (content:GrammarActivity) => {
+export const submitNewLesson = (content: GrammarActivity) => {
   const cleanedContent = _.pickBy(content)
-  return (dispatch:Function) => {
+  return (dispatch: Function) => {
     dispatch({ type: ActionTypes.AWAIT_NEW_LESSON_RESPONSE, });
-    const newRef = activitiesRef.push(cleanedContent, (error:string) => {
+    const newRef = activitiesRef.push(cleanedContent, (error: string) => {
       dispatch({ type: ActionTypes.RECEIVE_NEW_LESSON_RESPONSE, });
       if (error) {
         dispatch({ type: ActionTypes.DISPLAY_ERROR, error: `Submission failed! ${error}`, });

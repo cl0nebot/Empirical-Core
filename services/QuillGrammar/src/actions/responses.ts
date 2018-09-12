@@ -28,7 +28,7 @@ function getQuestionLoadedStatusForGroupedResponses(groupedResponses) {
   return statuses;
 }
 
-export function submitResponse(content: Response, prid: string, isFirstAttempt:boolean) {
+export function submitResponse(content: Response, prid: string|null, isFirstAttempt:boolean) {
   delete content.gradeIndex;
   const rubyConvertedResponse: Response & { created_at: string, first_attempt_count: number, is_first_attempt: boolean} = objectWithSnakeKeysFromCamel(content);
   rubyConvertedResponse.created_at = moment().format('x');
