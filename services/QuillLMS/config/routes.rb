@@ -381,6 +381,10 @@ EmpiricalGrammar::Application.routes.draw do
     # end
   end
 
+  namespace :apps do
+    get '/grammar/staff', to: 'grammar#staff' 
+  end
+
   # for some reason, session_path with method :delete does not evaluate correctly in profiles/student.html.erb
   # so we have the patch below:
   get '/session', to: 'sessions#destroy'

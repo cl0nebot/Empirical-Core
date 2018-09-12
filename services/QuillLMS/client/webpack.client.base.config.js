@@ -95,6 +95,9 @@ module.exports = {
     staff: [
       './app/bundles/Staff/startup/clientRegistration.js'
     ],
+    apps: [
+      './app/bundles/Apps/startup/clientRegistration.ts'
+    ],
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
