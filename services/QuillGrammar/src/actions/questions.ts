@@ -229,7 +229,7 @@ export const startResponseEdit = (qid: string, rid: string) => {
 }
 
 export const updatePageNumber = (pageNumber: Number, qid: string) => {
-  return (dispatch:Function) => {
+  return (dispatch: Function) => {
     dispatch(setPageNumber(pageNumber));
     dispatch(searchResponses(qid));
   };
