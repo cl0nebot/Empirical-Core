@@ -33,7 +33,7 @@ export const cancelConceptsFeedbackEdit = (cid: string) => {
 export const deleteConceptsFeedback = (cid: string) => {
   return (dispatch: Function) => {
     dispatch({ type: ActionTypes.SUBMIT_CONCEPTS_FEEDBACK_EDIT, cid, });
-    feedbackRef.child(cid).remove((error: string) => {
+    feedbackRef.child(cid).remove((error: Error | null): any | undefined => {
       dispatch({ type: ActionTypes.FINISH_CONCEPTS_FEEDBACK_EDIT, cid, });
       if (error) {
         dispatch({ type: ActionTypes.DISPLAY_ERROR, error: `Deletion failed! ${error}`, });
@@ -47,7 +47,7 @@ export const deleteConceptsFeedback = (cid: string) => {
 export const submitConceptsFeedbackEdit = (cid: string, content: ConceptFeedback) => {
   return (dispatch: Function) => {
     dispatch({ type: ActionTypes.SUBMIT_CONCEPTS_FEEDBACK_EDIT, cid, });
-    feedbackRef.child(cid).update(content, (error: string) => {
+    feedbackRef.child(cid).update(content, (error: Error | null): any | undefined => {
       dispatch({ type: ActionTypes.FINISH_CONCEPTS_FEEDBACK_EDIT, cid, });
       if (error) {
         dispatch({ type: ActionTypes.DISPLAY_ERROR, error: `Update failed! ${error}`, });
@@ -65,7 +65,7 @@ export const toggleNewConceptsFeedbackModal = () => {
 export const submitNewConceptsFeedback = (content: ConceptFeedback) => {
   return (dispatch: Function) => {
     dispatch({ type: ActionTypes.AWAIT_NEW_CONCEPTS_FEEDBACK_RESPONSE, });
-    const newRef = feedbackRef.push(content, (error: string) => {
+    const newRef = feedbackRef.push(content, (error: Error | null): any | undefined => {
       dispatch({ type: ActionTypes.RECEIVE_NEW_CONCEPTS_FEEDBACK_RESPONSE, });
       if (error) {
         dispatch({ type: ActionTypes.DISPLAY_ERROR, error: `Submission failed! ${error}`, });

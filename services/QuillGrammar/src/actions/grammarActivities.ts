@@ -6,9 +6,9 @@ import { GrammarActivities, GrammarActivity } from '../interfaces/grammarActivit
 import * as _ from 'lodash';
 
 export const startListeningToActivities = () => {
-  return (dispatch:Function) => {
-    activitiesRef.on('value', (snapshot:any) => {
-      const activities: Array<GrammarActivities> = snapshot.val()
+  return (dispatch: Function) => {
+    activitiesRef.on('value', (snapshot: any) => {
+      const activities: GrammarActivities[] = snapshot.val()
       if (activities) {
         dispatch({ type: ActionTypes.RECEIVE_GRAMMAR_ACTIVITIES_DATA, data: activities, });
       } else {
@@ -40,7 +40,7 @@ export const submitNewLesson = (content: GrammarActivity) => {
   const cleanedContent = _.pickBy(content)
   return (dispatch: Function) => {
     dispatch({ type: ActionTypes.AWAIT_NEW_LESSON_RESPONSE, });
-    const newRef = activitiesRef.push(cleanedContent, (error: string) => {
+    const newRef = activitiesRef.push(cleanedContent, (error?: Error | null): any => {
       dispatch({ type: ActionTypes.RECEIVE_NEW_LESSON_RESPONSE, });
       if (error) {
         dispatch({ type: ActionTypes.DISPLAY_ERROR, error: `Submission failed! ${error}`, });
@@ -65,7 +65,7 @@ export const submitLessonEdit = (cid:string, content:GrammarActivity) => {
   return (dispatch:Function) => {
     dispatch({ type: ActionTypes.SUBMIT_LESSON_EDIT, cid, });
     const cleanedContent = _.pickBy(content)
-    activitiesRef.child(cid).set(cleanedContent, (error:string) => {
+    activitiesRef.child(cid).set(cleanedContent, (error?: Error | null): any => {
       dispatch({ type: ActionTypes.FINISH_LESSON_EDIT, cid, });
       if (error) {
         dispatch({ type: ActionTypes.DISPLAY_ERROR, error: `Update failed! ${error}`, });
@@ -79,7 +79,7 @@ export const submitLessonEdit = (cid:string, content:GrammarActivity) => {
 export const deleteLesson = (cid:string) => {
   return (dispatch:Function) => {
     dispatch({ type: ActionTypes.SUBMIT_LESSON_EDIT, cid, });
-    activitiesRef.child(cid).remove((error:string) => {
+    activitiesRef.child(cid).remove((error?: Error | null): any => {
       dispatch({ type: ActionTypes.FINISH_LESSON_EDIT, cid, });
       if (error) {
         dispatch({ type: ActionTypes.DISPLAY_ERROR, error: `Deletion failed! ${error}`, });

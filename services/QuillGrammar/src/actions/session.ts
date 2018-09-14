@@ -34,30 +34,34 @@ export const startListeningToQuestions = (concepts: any) => {
 
     const conceptUIDs = Object.keys(concepts)
     questionsRef.orderByChild('concept_uid').on('value', (snapshot) => {
-      const questions = snapshot.val()
-      const questionsForConcepts = {}
-      Object.keys(questions).map(q => {
-        if (conceptUIDs.includes(questions[q].concept_uid)) {
-          const question = questions[q]
-          question.uid = q
-          if (questionsForConcepts.hasOwnProperty(question.concept_uid)) {
-            questionsForConcepts[question.concept_uid] = questionsForConcepts[question.concept_uid].concat(question)
-          } else {
-            questionsForConcepts[question.concept_uid] = [question]
+      if (snapshot) {
+        const questions = snapshot.val()
+        const questionsForConcepts: {[key: string]: Question[]} = {}
+        Object.keys(questions).map(q => {
+          if (conceptUIDs.includes(questions[q].concept_uid)) {
+            const question = questions[q]
+            question.uid = q
+            if (questionsForConcepts.hasOwnProperty(question.concept_uid)) {
+              questionsForConcepts[question.concept_uid] = questionsForConcepts[question.concept_uid].concat(question)
+            } else {
+              questionsForConcepts[question.concept_uid] = [question]
+            }
           }
+        })
+
+        const arrayOfQuestions: any[] = []
+        Object.keys(questionsForConcepts).forEach(conceptUID => {
+          const shuffledQuestionArray = shuffle(questionsForConcepts[conceptUID])
+          const numberOfQuestions = concepts[conceptUID].quantity
+          arrayOfQuestions.push(shuffledQuestionArray.slice(0, numberOfQuestions))
+        })
+
+        const flattenedArrayOfQuestions = _.flatten(arrayOfQuestions)
+        if (flattenedArrayOfQuestions.length > 0) {
+          dispatch({ type: ActionTypes.RECEIVE_QUESTION_DATA, data: flattenedArrayOfQuestions, });
+        } else {
+          dispatch({ type: ActionTypes.NO_QUESTIONS_FOUND_FOR_SESSION})
         }
-      })
-
-      const arrayOfQuestions: any[] = []
-      Object.keys(questionsForConcepts).forEach(conceptUID => {
-        const shuffledQuestionArray = shuffle(questionsForConcepts[conceptUID])
-        const numberOfQuestions = concepts[conceptUID].quantity
-        arrayOfQuestions.push(shuffledQuestionArray.slice(0, numberOfQuestions))
-      })
-
-      const flattenedArrayOfQuestions = _.flatten(arrayOfQuestions)
-      if (flattenedArrayOfQuestions.length > 0) {
-        dispatch({ type: ActionTypes.RECEIVE_QUESTION_DATA, data: flattenedArrayOfQuestions, });
       } else {
         dispatch({ type: ActionTypes.NO_QUESTIONS_FOUND_FOR_SESSION})
       }

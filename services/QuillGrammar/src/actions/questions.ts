@@ -7,9 +7,30 @@ const questionsRef = rootRef.child('questions')
 import { Questions, Question } from '../interfaces/questions'
 import * as responseActions from './responses'
 import { Response, ConceptResult } from 'quill-marking-logic'
-
-interface SavedResponse extends Response {
-  id: number;
+import _ from 'underscore';
+export interface SavedResponse {
+  author?: string|null,
+  feedback?: string|null,
+  first_attempt_count?: number|null,
+  child_count?: number|null,
+  concept_results?: string|null|{[key: string]: boolean}
+  conceptResults?: ConceptResult[]
+  count: number,
+  created_at?: string,
+  id: number,
+  key?: string,
+  optimal?: Boolean|null,
+  parent_uid?: string|null,
+  parent_id?: number|string|null,
+  parentId?: number|string|null,
+  question_uid: string,
+  sortOrder?: number,
+  statusCode?: number
+  uid?: string|null,
+  updated_at?: string,
+  text: string,
+  weak?: Boolean|null,
+  spelling_error?: Boolean|null,
 }
 
 export const startListeningToQuestions = () => {
@@ -34,16 +55,19 @@ export const getGradedResponsesWithCallback = (questionID: string, callback: Fun
     JSON.parse(body).forEach((resp: SavedResponse) => {
       bodyToObj[resp.id] = resp;
       if (typeof resp.concept_results === 'string') {
-        resp.concept_results = JSON.parse(resp.concept_results);
+        const parsed: { [key: string]: boolean } = JSON.parse(resp.concept_results)
+        resp.concept_results = parsed;
       }
-      if (resp.concept_results) {
+      resp.conceptResults = [];
+      if (resp.concept_results && typeof resp.concept_results === 'object') {
         for (const cr in resp.concept_results) {
-          const formatted_cr: ConceptResult = { conceptUID: '', correct: false};
-          formatted_cr.conceptUID = cr;
-          formatted_cr.correct = resp.concept_results[cr];
-          resp.concept_results[cr] = formatted_cr;
+          if (resp.concept_results.hasOwnProperty(cr)) {
+            const formattedCr: ConceptResult = { conceptUID: '', correct: false};
+            formattedCr.conceptUID = cr;
+            formattedCr.correct = resp.concept_results[cr];
+            resp.conceptResults.push(formattedCr);
+          }
         }
-        resp.conceptResults = resp.concept_results;
         delete resp.concept_results;
       }
     });
@@ -53,7 +77,7 @@ export const getGradedResponsesWithCallback = (questionID: string, callback: Fun
 
 export const updateFlag = (qid: string, flag: string) => {
   return (dispatch:Function) => {
-    questionsRef.child(`${qid}/flag/`).set(flag, (error:string) => {
+    questionsRef.child(`${qid}/flag/`).set(flag, (error: Error | null): any | undefined => {
       if (error) {
         alert(`Flag update failed! ${error}`);
       }
@@ -80,7 +104,7 @@ export const searchResponses = (qid:string) => {
         // if equal to const set earlier, update the state
         // otherwise, do nothing
         if (getState().filters.requestCount === requestNumber && data) {
-          const embeddedOrder = _.map(data.results, (response, i) => {
+          const embeddedOrder = _.map(data.results, (response: {[x: string]: any}, i) => {
             response.sortOrder = i;
             return response;
           });
@@ -103,6 +127,7 @@ export const getFormattedSearchData = (state) =>{
   searchData.pageNumber = state.filters.responsePageNumber;
   return searchData;
 }
+
 
 export const updateResponses = (data: Array<Response>) =>{
   return { type: ActionTypes.UPDATE_SEARCHED_RESPONSES, data, };
