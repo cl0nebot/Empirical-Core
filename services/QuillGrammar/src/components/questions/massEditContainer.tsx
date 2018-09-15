@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as request from 'request';
+import React from 'react';
+import request from 'request';
 import { connect } from 'react-redux';
 import { Response } from 'quill-marking-logic'
 import * as massEdit from '../../actions/massEdit';

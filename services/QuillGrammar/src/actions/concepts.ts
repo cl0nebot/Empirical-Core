@@ -1,4 +1,4 @@
-import * as request from 'request';
+import request from 'request';
 import _ from 'underscore';
 
 import { ActionTypes } from './actionTypes'

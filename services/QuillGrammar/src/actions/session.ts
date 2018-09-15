@@ -7,7 +7,7 @@ import { Question } from '../interfaces/questions'
 import { SessionState } from '../reducers/sessionReducer'
 import { checkGrammarQuestion, Response } from 'quill-marking-logic'
 import { shuffle } from '../helpers/shuffle';
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 export const updateSessionOnFirebase = (sessionID: string, session: SessionState) => {
   const cleanedSession = _.pickBy(session)

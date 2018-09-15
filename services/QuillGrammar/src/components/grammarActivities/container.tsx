@@ -1,8 +1,8 @@
-import * as React from "react";
-import * as Redux from "redux";
+import React from "react";
+import Redux from "redux";
 import {connect} from "react-redux";
-import * as request from 'request';
-import * as _ from 'lodash';
+import request from 'request';
+import _ from 'lodash';
 import { Response } from 'quill-marking-logic'
 import getParameterByName from '../../helpers/getParameterByName';
 import { startListeningToActivity } from "../../actions/grammarActivities";

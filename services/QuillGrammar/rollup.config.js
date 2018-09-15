@@ -6,10 +6,12 @@ import postcss from 'rollup-plugin-postcss';
 import resolve from 'rollup-plugin-node-resolve';
 import tslint from 'rollup-plugin-tslint';
 import typescript from 'rollup-plugin-typescript2';
+import json from 'rollup-plugin-json';
 
 import pkg from './package.json';
+import { formatDiagnosticsWithColorAndContext } from 'typescript';
 
-const libraryName = 'ComponentLibrary',
+const libraryName = 'quill-grammar',
     globalLibs = {
         "classnames": "classnames",
         "react": "React"
@@ -22,16 +24,16 @@ const libraryName = 'ComponentLibrary',
 export default {
     input: 'src/App.tsx',
     output: [{
-        external: externalLibs,
+        // external: externalLibs,
         file: `dist/${pkg.main}`,
         format: 'umd',
-        globals: globalLibs,
+        // globals: globalLibs,
         name: libraryName
     }, {
-        external: externalLibs,
+        // external: externalLibs,
         file: `dist/${pkg.module}`,
         format: 'es',
-        globals: globalLibs,
+        // globals: globalLibs,
         name: libraryName
     }],
     plugins: [
@@ -45,13 +47,19 @@ export default {
         typescript({
             clean: true,
             typescript: require('typescript'),
-            verbosity: 0
+            verbosity: 0,
+            abortOnError: false
         }),
         commonjs({
             include: 'node_modules/**',
             namedExports: {
               'node_modules/prop-types/index.js': ['bool', 'object', 'string', 'func', 'oneOfType', 'array', 'shape', 'element', 'arrayOf'],
-              'node_modules/react/react.js': ['createElement']
+              'node_modules/react/react.js': ['createElement'],
+              'node_modules/react/index.js': ['createElement', 'Component'],
+              'node_modules/quill-component-library/dist/componentLibrary.js': ['hashToCollection', 'ConceptExplanation', 'Modal', 'ArchivedButton', 'FlagDropdown', 'ResponseSortFields', 'ResponseToggleFields', 'QuestionBar', 'AffectedResponse'],
+              'node_modules/lodash/lodash.js': ['values', 'flatten', 'compact', 'pickBy', 'cloneDeep'],
+              'node_modules/draft-js/lib/Draft.js': ['EditorState', 'ContentState'],
+              'node_modules/underscore/underscore.js': ['values', 'mapObject', 'each', 'isEqual', 'indexBy']
             }
         }),
         resolve({
@@ -83,6 +91,7 @@ export default {
                 "dependencies": pkg.peerDependencies,
                 "private": false
             }
-        })
+        }),
+        json()
     ]
 };

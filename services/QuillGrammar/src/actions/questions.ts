@@ -1,5 +1,5 @@
-import * as request from 'request'
-import * as Pusher from 'pusher-js';
+import request from 'request'
+import Pusher from 'pusher-js';
 import { push } from 'react-router-redux';
 import rootRef from '../firebase';
 import { ActionTypes } from './actionTypes'
@@ -87,6 +87,10 @@ export const updateFlag = (qid: string, flag: string) => {
 
 export const incrementRequestCount = () => {
   return { type: ActionTypes.INCREMENT_REQUEST_COUNT }
+}
+
+export const toggleNewQuestionModal = () => {
+  return {type: ActionTypes.TOGGLE_NEW_QUESTION_MODAL }
 }
 
 export const searchResponses = (qid:string) => {
@@ -229,7 +233,7 @@ export const startResponseEdit = (qid: string, rid: string) => {
 }
 
 export const updatePageNumber = (pageNumber: Number, qid: string) => {
-  return (dispatch: Function) => {
+  return (dispatch:Function) => {
     dispatch(setPageNumber(pageNumber));
     dispatch(searchResponses(qid));
   };
