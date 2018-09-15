@@ -10,7 +10,7 @@
     "test": "jest",
     "build:jenkins": "tsc && webpack --optimize-minimize",
     "build": "tsc && webpack --progress",
-    "build:rollup": "rollup -c",
+    "build:rollup": "node --max-old-space-size=8192 node_modules/rollup/bin/rollup -c",
     "clean": "rd /s/q built"
   },
   "keywords": [
@@ -80,7 +80,7 @@
     "react-test-renderer": "^16.0.0",
     "redux-devtools-extension": "^2.13.2",
     "rollup": "^0.65.2",
-    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-commonjs": "^9.1.6",
     "rollup-plugin-generate-package-json": "^1.0.0",
     "rollup-plugin-json": "^2.3.1",
     "rollup-plugin-node-builtins": "^2.1.2",

@@ -14,7 +14,6 @@ import ConceptSelectorWithCheckbox from '../shared/conceptSelectorWithCheckbox';
 import {
   deleteResponse,
   submitResponseEdit,
-  incrementResponseCount,
   updateConceptResults,
   getGradedResponsesWithCallback,
 } from '../../actions/responses';
@@ -173,7 +172,6 @@ export default class Response extends React.Component {
 
   incrementResponse(rid: string) {
     const qid = this.props.questionID;
-    this.props.dispatch(incrementResponseCount(qid, rid));
   }
 
   removeLinkToParentID(rid: string) {

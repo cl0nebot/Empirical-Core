@@ -1,0 +1,13 @@
+{
+  "name": "quill-grammar",
+  "version": "1.0.0",
+  "description": "Quill Grammar React App",
+  "main": "grammar.js",
+  "module": "grammar.module.js",
+  "author": "Quill.org",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "fs": "0.0.1-security"
+  },
+  "private": false
+}

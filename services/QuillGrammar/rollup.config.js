@@ -14,26 +14,26 @@ import { formatDiagnosticsWithColorAndContext } from 'typescript';
 const libraryName = 'quill-grammar',
     globalLibs = {
         "classnames": "classnames",
-        "react": "React"
+        "antd": "antd"
     },
     externalLibs = [
         'classnames',
-        'react'
+        'antd'
     ];
 
 export default {
     input: 'src/App.tsx',
     output: [{
-        // external: externalLibs,
+        external: externalLibs,
         file: `dist/${pkg.main}`,
         format: 'umd',
-        // globals: globalLibs,
+        globals: globalLibs,
         name: libraryName
     }, {
-        // external: externalLibs,
+        external: externalLibs,
         file: `dist/${pkg.module}`,
         format: 'es',
-        // globals: globalLibs,
+        globals: globalLibs,
         name: libraryName
     }],
     plugins: [
@@ -55,11 +55,14 @@ export default {
             namedExports: {
               'node_modules/prop-types/index.js': ['bool', 'object', 'string', 'func', 'oneOfType', 'array', 'shape', 'element', 'arrayOf'],
               'node_modules/react/react.js': ['createElement'],
-              'node_modules/react/index.js': ['createElement', 'Component'],
+              'node_modules/react-dom/index.js': ['findDOMNode', 'render', 'createPortal', 'unmountComponentAtNode'],
+              'node_modules/react/index.js': ['createElement', 'Component', 'Children', 'cloneElement', 'isValidElement', 'PureComponent'],
               'node_modules/quill-component-library/dist/componentLibrary.js': ['hashToCollection', 'ConceptExplanation', 'Modal', 'ArchivedButton', 'FlagDropdown', 'ResponseSortFields', 'ResponseToggleFields', 'QuestionBar', 'AffectedResponse'],
               'node_modules/lodash/lodash.js': ['values', 'flatten', 'compact', 'pickBy', 'cloneDeep'],
-              'node_modules/draft-js/lib/Draft.js': ['EditorState', 'ContentState'],
-              'node_modules/underscore/underscore.js': ['values', 'mapObject', 'each', 'isEqual', 'indexBy']
+              'node_modules/draft-js/lib/Draft.js': ['Editor', 'EditorState', 'ContentState', 'KeyBindingUtil', 'Modifier', 'DefaultDraftBlockRenderMap', 'CompositeDecorator', 'getDefaultKeyBinding', 'DefaultDraftInlineStyle', 'genKey', 'CharacterMetadata', 'ContentBlock', 'convertFromHTML', 'BlockMapBuilder'],
+              'node_modules/underscore/underscore.js': ['values', 'mapObject', 'each', 'isEqual', 'indexBy'],
+              'node_modules/rc-editor-mention/lib/index.js': ['toString'],
+              'node_modules/immutable/dist/immutable.js': ['List', 'Map', 'OrderedSet', 'is', 'fromJS', 'Repeat']
             }
         }),
         resolve({
