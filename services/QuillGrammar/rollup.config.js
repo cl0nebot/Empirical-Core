@@ -7,6 +7,8 @@ import resolve from 'rollup-plugin-node-resolve';
 import tslint from 'rollup-plugin-tslint';
 import typescript from 'rollup-plugin-typescript2';
 import json from 'rollup-plugin-json';
+var builtins = require('rollup-plugin-node-builtins');
+import nodeGlobals from 'rollup-plugin-node-globals';
 
 import pkg from './package.json';
 import { formatDiagnosticsWithColorAndContext } from 'typescript';
@@ -38,6 +40,7 @@ export default {
         name: libraryName
     }],
     plugins: [
+       
         postcss({
             modules: true
         }),
@@ -50,6 +53,13 @@ export default {
             typescript: require('typescript'),
             verbosity: 0,
             abortOnError: false
+        }),
+        nodeGlobals(),
+        builtins({
+            crypto: true,
+            fs: false,
+            net: false,
+            tls: false
         }),
         commonjs({
             include: 'node_modules/**',
@@ -71,7 +81,6 @@ export default {
             customResolveOptions: {
                 moduleDirectory: 'node_modules'
             },
-            browser: true,
         }),
         packageJson({
             // By default, the plugin searches for package.json file.
