@@ -1,4 +1,4 @@
 import ReactOnRails from 'react-on-rails';
-import GrammarCMS from '../../../../../../QuillGrammar/src/App';
+import GrammarCMS from 'quill-grammar';
 
 ReactOnRails.register({ GrammarCMS, });

@@ -18,7 +18,8 @@ const libraryName = 'quill-grammar',
     },
     externalLibs = [
         'classnames',
-        'antd'
+        'antd',
+        'tslib'
     ];
 
 export default {
@@ -69,7 +70,8 @@ export default {
             // pass custom options to the resolve plugin
             customResolveOptions: {
                 moduleDirectory: 'node_modules'
-            }
+            },
+            browser: true,
         }),
         packageJson({
             // By default, the plugin searches for package.json file.
