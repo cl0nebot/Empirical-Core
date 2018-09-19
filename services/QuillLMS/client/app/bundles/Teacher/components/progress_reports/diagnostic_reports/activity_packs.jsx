@@ -1,6 +1,7 @@
 import React from 'react';
 import request from 'request';
-import Units from '../../lesson_planner/manage_units/activities_units.jsx';
+// import Units from '../../lesson_planner/manage_units/activities_units.jsx';
+import ActivityPacksVList from './activity_packs_virtualized_list';
 import LoadingSpinner from '../../shared/loading_indicator.jsx';
 import EmptyProgressReport from '../../shared/EmptyProgressReport.jsx';
 import ItemDropdown from '../../general_components/dropdown_selectors/item_dropdown';
@@ -37,10 +38,10 @@ export default React.createClass({
 
   getRecommendationIds() {
     fetch(`${process.env.DEFAULT_URL}/teachers/progress_reports/activity_with_recommendations_ids`, {
-    method: 'GET',
-    mode: 'cors',
-    credentials: 'include',
-  }).then((response) => {
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'include',
+    }).then((response) => {
       if (!response.ok) {
         throw Error(response.statusText);
       }
@@ -48,8 +49,8 @@ export default React.createClass({
     }).then((response) => {
       this.setState({ activityWithRecommendationsIds: response.activityWithRecommendationsIds, });
     }).catch((error) => {
-      console.log('error', error);
-    });
+    console.log('error', error);
+  });
   },
 
   getClassrooms() {
@@ -65,7 +66,7 @@ export default React.createClass({
   },
 
   getUnits() {
-    request.get(`${process.env.DEFAULT_URL}/teachers/units?report=true`, (error, httpStatus, body) => {
+    request.get(`${process.env.DEFAULT_URL}/teachers/units`, (error, httpStatus, body) => {
       this.setAllUnits(JSON.parse(body));
     });
   },
@@ -194,15 +195,15 @@ export default React.createClass({
         <EmptyProgressReport
           missing="activitiesForSelectedClassroom"
           onButtonClick={() => {
-        this.setState({ selectedClassroomId: null, loaded: false, });
-        this.getUnitsForCurrentClass();
-      }}
+            this.setState({ selectedClassroomId: null, loaded: false, });
+            this.getUnitsForCurrentClass();
+          }}
         />
 				);
     } else if (this.state.units.length === 0) {
       content = <EmptyProgressReport missing="activities" />;
     } else {
-      content = <Units report={Boolean(true)} activityReport={Boolean(true)} data={this.state.units} activityWithRecommendationsIds={this.state.activityWithRecommendationsIds} />;
+      content = <ActivityPacksVList report={Boolean(true)} activityReport={Boolean(true)} data={this.state.units} activityWithRecommendationsIds={this.state.activityWithRecommendationsIds} />;
     }
 
     return (
@@ -212,10 +213,10 @@ export default React.createClass({
         <div className="classroom-selector">
           <p>Select a classroom:</p>
           <ItemDropdown
-        items={classrooms}
-        callback={this.switchClassrooms}
-        selectedItem={selectedClassroom}
-      />
+            items={classrooms}
+            callback={this.switchClassrooms}
+            selectedItem={selectedClassroom}
+          />
         </div>
         {content}
       </div>
