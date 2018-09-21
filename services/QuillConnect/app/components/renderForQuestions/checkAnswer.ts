@@ -3,7 +3,9 @@ import { hashToCollection } from 'quill-component-library/dist/componentLibrary'
 import * as _ from 'underscore';
 import {checkSentenceCombining, checkDiagnosticQuestion} from 'quill-marking-logic';
 import { getParameterByName } from '../../libs/getParameterByName';
-import { sendActivitySessionInteractionLog } from '../../libs/sendActivitySessionInteractionLog';
+//future
+import { sendActivitySessionInteractionLog } from 'quill-component-library/dist/componentLibrary';
+//import { sendActivitySessionInteractionLog } from '../../libs/sendActivitySessionInteractionLog';
 
 
 export default function checkAnswer(question, response, responses, mode='default') {

@@ -69,3 +69,7 @@ export {
 export {
   hashToCollection
 } from './libs/hashToCollection'
+
+export {
+  sendActivitySessionInteractionLog
+} from './libs/sendActivitySessionInteractionLog'
