@@ -7,6 +7,7 @@ import AnalyticsWrapper from '../../shared/analytics_wrapper'
 
 export default React.createClass({
   render: function () {
+    alert('client/app/bundles/Teacher/components/accounts/new/new_teacher.jsx');
     if (this.props.stage === 1) {
       return (
         <BasicTeacherInfo errors={this.props.errors} signUp={this.props.signUp} updateKeyValue={this.props.updateKeyValue} sendNewsletter={this.props.sendNewsletter} />

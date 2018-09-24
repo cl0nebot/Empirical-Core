@@ -51,6 +51,7 @@ export default React.createClass({
     },
 
     render: function() {
+        alert('client/app/bundles/Teacher/components/accounts/new/basic_teacher_info.jsx')
         return (
             <div className="new-teacher-account">
               <h3 className='sign-up-header'>Sign up for a Teacher Account</h3>
