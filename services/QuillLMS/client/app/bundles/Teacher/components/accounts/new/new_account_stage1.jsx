@@ -13,10 +13,42 @@ const Home = () => (
   </div>
 )
 
+const Type = () => (
+  <div className='container account-form' id='sign-up'>
+    <div className='row sign_up_select_role'>
+        <div className='row'>
+          <h3 className='col-xs-12'>
+            Sign up for Quill as:
+          </h3>
+        </div>
+        <div className='option-wrapper'>
+          <Link to="/sign-up/teacher">
+            <button className='button-green'>
+              Educator
+            </button>
+          </Link>
+          <Link to="/sign-up/student">
+            <button className='button-green'>
+              Student
+            </button>
+          </Link>
+        </div>
+        <div className='row'>
+          <div className='col-xs-12'>Already signed up? <a href='/session/new'>Return to Login</a></div>
+        </div>
+    </div>
+  </div>
+)
 
-const About = () => (
+
+const Teacher = () => (
   <div>
-    <h2>About</h2>
+    <h2>Teacher</h2>
+  </div>
+)
+const Student = () => (
+  <div>
+    <h2>Student</h2>
   </div>
 )
 
@@ -59,40 +91,11 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <ul>
-            <li><Link to="/sign-up/type">Home</Link></li>
-            <li><Link to="/sign-up/teacher">About</Link></li>
-            <li><Link to="/sign-up/teacher/add-school">Topics</Link></li>
-          </ul>
-          <hr/>
+          <!-- acount/new should be /sign-up/type -->
+          <Route exact path="/account/new" component={Type}/>
+          <Route path="/sign-up/teacher" component={Teacher}/>
+          <Route path="/sign-up/student" component={Student}/>
 
-          <div className='container account-form' id='sign-up'>
-            <div className='row sign_up_select_role'>
-                <div className='row'>
-                  <h3 className='col-xs-12'>
-                    Sign up for Quill as:
-                  </h3>
-                </div>
-                <div className='option-wrapper'>
-                  <Link to="/sign-up/teacher">
-                    <button className='button-green'>
-                      Educator
-                    </button>
-                  </Link>
-                  <Link to="/sign-up/student">
-                    <button className='button-green'>
-                      Student
-                    </button>
-                  </Link>
-                </div>
-                <div className='row'>
-                  <div className='col-xs-12'>Already signed up? <a href='/session/new'>Return to Login</a></div>
-                </div>
-            </div>
-          </div>
-
-          <Route exact path="/sign-up/type" component={Home}/>
-          <Route path="/sign-up/teacher" component={About}/>
           <Route path="/sign-up/teacher/add-school" component={Topics}/>
         </div>
       </Router>
