@@ -1,17 +1,13 @@
+import AnalyticsWrapper from '../../shared/analytics_wrapper'
+import BasicTeacherInfo from './basic_teacher_info'
+import EducatorType from './educator_type'
 import React, { Component } from 'react'
 import RoleOption from './role_option'
-
 import {
   BrowserRouter as Router,
+  Link,
   Route,
-  Link
 } from 'react-router-dom'
-
-const Home = () => (
-  <div>
-    <h2>Home</h2>
-  </div>
-)
 
 const Type = () => (
   <div className='container account-form' id='sign-up'>
@@ -41,11 +37,14 @@ const Type = () => (
 )
 
 
-const Teacher = () => (
-  <div>
-    <h2>Teacher</h2>
-  </div>
-)
+const Teacher = React.createClass({
+  render() {
+    return (
+      <BasicTeacherInfo signUp={this.props.signUp} updateKeyValue={this.props.updateKeyValue} sendNewsletter={this.props.sendNewsletter} />
+    );
+  }
+});
+
 const Student = () => (
   <div>
     <h2>Student</h2>
@@ -88,12 +87,12 @@ const Topics = ({ match }) => (
 
 class App extends Component {
   render() {
+    alert(this.props);
     return (
       <Router>
         <div>
-          <!-- acount/new should be /sign-up/type -->
           <Route exact path="/account/new" component={Type}/>
-          <Route path="/sign-up/teacher" component={Teacher}/>
+          <Route path="/sign-up/teacher" component={() => <Teacher props={this.props} />}/>
           <Route path="/sign-up/student" component={Student}/>
 
           <Route path="/sign-up/teacher/add-school" component={Topics}/>

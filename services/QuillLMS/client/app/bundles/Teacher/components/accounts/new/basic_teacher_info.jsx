@@ -1,6 +1,7 @@
 'use strict';
 import React from 'react'
 import AuthSignUp from './auth_sign_up'
+import AnalyticsWrapper from '../../shared/analytics_wrapper'
 
 export default React.createClass({
     formFields: [
@@ -26,32 +27,77 @@ export default React.createClass({
         }
     ],
 
+    uponSignUp: function (data) {
+      window.location = '/profile';
+    },
+
+
+    signUp: function () {
+      if (this.state.first_name && this.state.last_name) {
+        $.ajax({
+          type: 'POST',
+          url: '/account',
+          data: this.signUpData(),
+          success: this.uponSignUp,
+          error: this.signUpError
+        });
+      } else {
+        const errors = {}
+        if (!this.state.first_name) {
+          errors['first_name'] = "can't be blank"
+        }
+        if (!this.state.last_name) {
+          errors['last_name'] = "can't be blank"
+        }
+        this.setState({errors})
+      }
+    },
+
+    signUpError: function (xhr) {
+      var errors = $.parseJSON(xhr.responseText).errors;
+      this.setState({errors: errors});
+    },
+
+    signUpData: function () {
+      const name = this.state.first_name + ' ' + this.state.last_name
+      const data = {
+        role: 'teacher',
+        name,
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password,
+        send_newsletter: this.state.sendNewsletter
+      };
+      return {user: data};
+    },
+
+    updateKeyValue: function (key, value) {
+      const newState = Object.assign({}, this.state);
+      newState[key] = value;
+      this.setState(newState);
+    },
+
     updateSendNewsletter: function(event) {
-        this.props.updateKeyValue('sendNewsletter', event.target.checked);
+      this.updateKeyValue('sendNewsletter', event.target.checked);
     },
 
     update: function(e) {
-      this.props.updateKeyValue(e.target.id, e.target.value)
+      this.updateKeyValue(e.target.id, e.target.value)
     },
 
     inputs: function() {
       const that = this
       return this.formFields.map(function(field) {
         const type = field.name === 'password' ? 'password' : 'text'
-        const error = that.props.errors[field.name]
-          ? <div className="error">{field.errorLabel} {that.props.errors[field.name].join(", ")}.</div>
-          : <span />
         return <div className="text-input-row" key={field.name}>
           <div className="form-label">{field.label}</div>
           <input id={field.name} placeholder={field.label} type={type} onChange={that.update}/>
-          {error}
         </div>
       }
       )
     },
 
     render: function() {
-        alert('client/app/bundles/Teacher/components/accounts/new/basic_teacher_info.jsx')
         return (
             <div className="new-teacher-account">
               <h3 className='sign-up-header'>Sign up for a Teacher Account</h3>
@@ -61,7 +107,7 @@ export default React.createClass({
               {this.inputs()}
               <input type='checkbox' name='sendNewsletter' ref='sendNewsletter' onChange={this.updateSendNewsletter} checked={this.props.sendNewsletter}/>
               <p>Send me monthly Quill updates</p>
-              <button className='sign-up-button button-green' onClick={this.props.signUp}>Sign Up</button>
+              <button className='sign-up-button button-green' onClick={this.signUp}>Sign Up</button>
               <div className='text-align-center'>
                 By signing up, you agree to our <a href='/tos' target='_blank'>terms of service</a> and <a href='/privacy' target='_blank'>privacy policy</a>.
               </div>
