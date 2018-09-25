@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import RoleOption from './role_option'
+
 import {
   BrowserRouter as Router,
   Route,
@@ -10,6 +12,7 @@ const Home = () => (
     <h2>Home</h2>
   </div>
 )
+
 
 const About = () => (
   <div>
@@ -57,16 +60,40 @@ class App extends Component {
       <Router>
         <div>
           <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/topics">Topics</Link></li>
+            <li><Link to="/sign-up/type">Home</Link></li>
+            <li><Link to="/sign-up/teacher">About</Link></li>
+            <li><Link to="/sign-up/teacher/add-school">Topics</Link></li>
           </ul>
-
           <hr/>
 
-          <Route exact path="/" component={Home}/>
-          <Route path="/about" component={About}/>
-          <Route path="/topics" component={Topics}/>
+          <div className='container account-form' id='sign-up'>
+            <div className='row sign_up_select_role'>
+                <div className='row'>
+                  <h3 className='col-xs-12'>
+                    Sign up for Quill as:
+                  </h3>
+                </div>
+                <div className='option-wrapper'>
+                  <Link to="/sign-up/teacher">
+                    <button className='button-green'>
+                      Educator
+                    </button>
+                  </Link>
+                  <Link to="/sign-up/student">
+                    <button className='button-green'>
+                      Student
+                    </button>
+                  </Link>
+                </div>
+                <div className='row'>
+                  <div className='col-xs-12'>Already signed up? <a href='/session/new'>Return to Login</a></div>
+                </div>
+            </div>
+          </div>
+
+          <Route exact path="/sign-up/type" component={Home}/>
+          <Route path="/sign-up/teacher" component={About}/>
+          <Route path="/sign-up/teacher/add-school" component={Topics}/>
         </div>
       </Router>
     )

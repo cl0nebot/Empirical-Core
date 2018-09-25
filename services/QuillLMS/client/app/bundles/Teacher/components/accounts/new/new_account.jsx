@@ -138,6 +138,7 @@ export default React.createClass({
   },
 
   render: function () {
+    alert('client/app/bundles/Teacher/components/accounts/new/new_account.jsx');
     var view;
     this.initializeTextInputGenerator();
     if (this.state.stage === 1) {
