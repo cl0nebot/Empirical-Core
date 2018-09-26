@@ -2,6 +2,11 @@
 import React from 'react'
 import AuthSignUp from './auth_sign_up'
 import AnalyticsWrapper from '../../shared/analytics_wrapper'
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+} from 'react-router-dom'
 
 export default React.createClass({
     formFields: [
@@ -28,7 +33,7 @@ export default React.createClass({
     ],
 
     uponSignUp: function (data) {
-      window.location = '/profile';
+      window.location = '/sign-up/teacher/pick-school-type';
     },
 
 
@@ -107,7 +112,11 @@ export default React.createClass({
               {this.inputs()}
               <input type='checkbox' name='sendNewsletter' ref='sendNewsletter' onChange={this.updateSendNewsletter} checked={this.props.sendNewsletter}/>
               <p>Send me monthly Quill updates</p>
-              <button className='sign-up-button button-green' onClick={this.signUp}>Sign Up</button>
+              <Link to="/sign-up/teacher/pick-school-type">
+                <button className='button-green sign-up-button'>
+                  Sign Up
+                </button>
+              </Link>
               <div className='text-align-center'>
                 By signing up, you agree to our <a href='/tos' target='_blank'>terms of service</a> and <a href='/privacy' target='_blank'>privacy policy</a>.
               </div>
