@@ -196,7 +196,6 @@ const PickSchoolType = () => (
 )
 
 
-
 class App extends Component {
   render() {
     return (

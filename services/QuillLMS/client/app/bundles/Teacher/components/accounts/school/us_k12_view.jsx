@@ -34,14 +34,28 @@ export default React.createClass({
     this.props.finish();
   },
 
+  selectSchool: function (school_id_or_type) {
+    this.props.analytics.track('select school');
+    $.ajax({
+      type: 'PUT',
+      dataType: "json",
+      url: '/select_school',
+      data: {
+        school_id_or_type: school_id_or_type
+      },
+      success: this.finish
+    });
+  },
+
   submitSchool: function(){
+    alert('in submit school');
     var school;
     if (this.state.selectedSchool && this.state.selectedSchool.id) {
       school = this.state.selectedSchool.id;
     } else {
       school = 'not listed';
     }
-    this.props.selectSchool(school);
+    this.selectSchool(school);
   },
 
  showButton: function(){
