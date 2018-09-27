@@ -93,7 +93,7 @@ const StudentDiagnostic = React.createClass({
     this.setState({ error: false, });
     const results = getConceptResultsForAllQuestions(this.props.playDiagnostic.answeredQuestions);
 
-    const { diagnosticID, } = this.props.params;
+    const diagnosticID = this.props.route.path;
     const sessionID = this.state.sessionID;
     if (sessionID) {
       this.finishActivitySession(sessionID, results, 1);
