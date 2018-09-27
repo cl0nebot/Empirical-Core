@@ -111,12 +111,7 @@ const BasicTeacherInfo =  React.createClass({
               {this.inputs()}
               <input type='checkbox' name='sendNewsletter' ref='sendNewsletter' onChange={this.updateSendNewsletter} checked={this.props.sendNewsletter}/>
               <p>Send me monthly Quill updates</p>
-              <Link to="/sign-up/student">
-                <button className='button-green'>
-                  Educator
-                </button>
-              </Link>
-              <Link to="/sign-up/pick-school-type">
+              <Link onClick={this.signUp} to="/sign-up/pick-school-type">
                 <button className='button-green sign-up-button'>
                   Sign Up
                 </button>
@@ -204,7 +199,6 @@ const PickSchoolType = () => (
 
 class App extends Component {
   render() {
-    alert(this.props);
     return (
       <Router>
         <div>
