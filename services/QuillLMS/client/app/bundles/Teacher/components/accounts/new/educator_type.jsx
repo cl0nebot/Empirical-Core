@@ -72,7 +72,6 @@ export default React.createClass({
   },
 
   render: function(){
-    alert('client/app/bundles/Teacher/components/accounts/new/educator_type.jsx');
     return(this.stateSpecificComponents());
   }
 });

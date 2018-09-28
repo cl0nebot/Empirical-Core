@@ -34,8 +34,11 @@ export default React.createClass({
     this.props.finish();
   },
 
+  finish: function () {
+    window.location = '/teachers/classrooms/new';
+  },
+
   selectSchool: function (school_id_or_type) {
-    this.props.analytics.track('select school');
     $.ajax({
       type: 'PUT',
       dataType: "json",
@@ -48,7 +51,6 @@ export default React.createClass({
   },
 
   submitSchool: function(){
-    alert('in submit school');
     var school;
     if (this.state.selectedSchool && this.state.selectedSchool.id) {
       school = this.state.selectedSchool.id;
