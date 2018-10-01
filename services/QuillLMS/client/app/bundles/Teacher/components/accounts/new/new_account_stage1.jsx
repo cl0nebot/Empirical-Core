@@ -58,12 +58,19 @@ const BasicTeacherInfo =  React.createClass({
       }
     },
 
+    uponSignup: function () {
+      alert('success fool!');
+      window.location = '/sign-up/pick-school-type'
+    },
+
     signUpError: function (xhr) {
+      alert('I have faaaailed.');
       var errors = $.parseJSON(xhr.responseText).errors;
       this.setState({errors: errors});
     },
 
     signUpData: function () {
+      alert('In sign up data.');
       const name = this.state.first_name + ' ' + this.state.last_name
       const data = {
         role: 'teacher',
@@ -112,7 +119,7 @@ const BasicTeacherInfo =  React.createClass({
               {this.inputs()}
               <input type='checkbox' name='sendNewsletter' ref='sendNewsletter' onChange={this.updateSendNewsletter} checked={this.props.sendNewsletter}/>
               <p>Send me monthly Quill updates</p>
-              <Link onClick={this.signUp} to="/sign-up/pick-school-type">
+              <Link onClick={this.signUp} to="#">
                 <button className='button-green sign-up-button'>
                   Sign Up
                 </button>

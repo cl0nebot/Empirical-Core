@@ -10,6 +10,7 @@ export default React.createClass({
     this.props.selectRole(role);
   },
   render: function () {
+    alert('Teacher/components/accounts/new/role_option.jsx');
     return (
       <button className={'select_' + this.props.role + ' button-green'} onClick={this.selectRole}>
         {this.props.role[0].toUpperCase() + this.props.role.substring(1)}

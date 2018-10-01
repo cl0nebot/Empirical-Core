@@ -61,10 +61,12 @@ export default React.createClass({
   },
 
   uponSignUp: function() {
+    alert('in new_student.jsx uponSignUp');
     window.location = '/add_classroom';
   },
 
   signUpError: function (xhr) {
+    alert('in new_student.jsx signUpErrosignUpError');
     var errors = $.parseJSON(xhr.responseText).errors;
     this.setState({errors: errors});
   },
@@ -116,7 +118,7 @@ export default React.createClass({
         </div>
         <div className='need-a-border'/>
         {this.inputs()}
-        <Link onClick={this.signUp} to="/add_classroom">
+        <Link onClick={this.signUp} to="#">
           <button className='button-green sign-up-button'>
             Sign Up
           </button>
