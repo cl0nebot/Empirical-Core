@@ -2,6 +2,7 @@ import AnalyticsWrapper from '../../shared/analytics_wrapper'
 import EducatorType from './educator_type'
 import React, { Component } from 'react'
 import AuthSignUp from './auth_sign_up'
+import StudentSignup from './new_student'
 import RoleOption from './role_option'
 import UsK12View from '../school/us_k12_view'
 import {
@@ -203,7 +204,7 @@ class App extends Component {
         <div>
           <Route exact path="/account/new" component={Type}/>
           <Route path="/sign-up/teacher" component={Teacher}/>
-          <Route path="/sign-up/student" component={Student}/>
+          <Route path="/sign-up/student" component={StudentSignup}/>
           <Route path="/sign-up/pick-school-type" component={PickSchoolType}/>
           <Route path="/sign-up/add-k12" component={UsK12View}/>
         </div>
