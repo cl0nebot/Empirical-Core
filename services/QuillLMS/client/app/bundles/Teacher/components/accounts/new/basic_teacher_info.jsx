@@ -59,6 +59,7 @@ export default React.createClass({
     },
 
     signUpError: function (xhr) {
+      alert(xhr);
       var errors = $.parseJSON(xhr.responseText).errors;
       this.setState({errors: errors});
     },
@@ -94,9 +95,13 @@ export default React.createClass({
       const that = this
       return this.formFields.map(function(field) {
         const type = field.name === 'password' ? 'password' : 'text'
+        const error = that.props.errors[field.name]
+          ? <div className="error">{field.errorLabel} {that.props.errors[field.name].join(", ")}.</div>
+          : <span />
         return <div className="text-input-row" key={field.name}>
           <div className="form-label">{field.label}</div>
           <input id={field.name} placeholder={field.label} type={type} onChange={that.update}/>
+          {error}
         </div>
       }
       )

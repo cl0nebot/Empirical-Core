@@ -66,7 +66,17 @@ const BasicTeacherInfo =  React.createClass({
     signUpError: function (xhr) {
       alert('I have faaaailed.');
       var errors = $.parseJSON(xhr.responseText).errors;
-      this.setState({errors: errors});
+      alert(JSON.stringify(errors));
+      alert(errors);
+      /*this.setState({errors: errors}, () => {
+        alert('props errors', this.props.errors);
+        alert('state errors', this.state.errors);
+      });*/
+      this.setState({
+        errors: errors 
+      }, () => { alert(this.state.errors); });
+      //alert('state errors', this.state.errors);
+      //alert('props errors', this.props.errors);
     },
 
     signUpData: function () {
@@ -101,9 +111,18 @@ const BasicTeacherInfo =  React.createClass({
       const that = this
       return this.formFields.map(function(field) {
         const type = field.name === 'password' ? 'password' : 'text'
+        const error = <span />
+        
+        if (that.state && that.state.errors) {
+          error = that.state.errors[field.name]
+            ? <div className="error">{field.errorLabel} {that.state.errors[field.name].join(", ")}.</div>
+            : <span />;
+          alert('yip');
+        }
         return <div className="text-input-row" key={field.name}>
           <div className="form-label">{field.label}</div>
           <input id={field.name} placeholder={field.label} type={type} onChange={that.update}/>
+          {error}
         </div>
       }
       )
