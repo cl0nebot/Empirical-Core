@@ -835,7 +835,8 @@ CREATE TABLE public.blog_posts (
     external_link character varying,
     center_images boolean,
     order_number integer,
-    school_premium boolean DEFAULT false
+    school_premium boolean DEFAULT false,
+    image_link character varying
 );
 
 
@@ -2663,7 +2664,9 @@ CREATE TABLE public.users (
     flags character varying[] DEFAULT '{}'::character varying[] NOT NULL,
     title character varying,
     time_zone character varying,
-    account_type character varying DEFAULT 'unknown'::character varying
+    account_type character varying DEFAULT 'unknown'::character varying,
+    verified boolean DEFAULT false,
+    verification_token character varying
 );
 
 
@@ -5587,4 +5590,10 @@ INSERT INTO schema_migrations (version) VALUES ('20180910152342');
 INSERT INTO schema_migrations (version) VALUES ('20180911171536');
 
 INSERT INTO schema_migrations (version) VALUES ('20181012155250');
+
+INSERT INTO schema_migrations (version) VALUES ('20181018195753');
+
+INSERT INTO schema_migrations (version) VALUES ('20181022202604');
+
+INSERT INTO schema_migrations (version) VALUES ('20181022203129');
 
