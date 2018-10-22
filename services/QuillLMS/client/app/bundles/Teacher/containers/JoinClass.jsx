@@ -75,7 +75,7 @@ export default class JoinClass extends React.Component {
           <button className='button-green' onClick={this.addClassroom}>Join Your Class</button>
           <br/>
           <span>Don't know your classcode?<br/>
-            You can ask your teacher for it.</span>
+            You can ask your teacher for it, or try <a href={`${process.env.DEFAULT_URL}/self_study`}>self-study mode</a>.</span>
         </div>
       </div>
     );

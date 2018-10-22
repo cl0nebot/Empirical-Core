@@ -38,6 +38,12 @@ class StudentsController < ApplicationController
     end
   end
 
+  def confirm_age_for_self_signup
+    # TODO: render a page that allows a student to tick a box and confirm they
+    # are older than 13, or if they are not, enter a parents email that can be
+    # confirmed
+  end
+
   private
 
   def authorize!

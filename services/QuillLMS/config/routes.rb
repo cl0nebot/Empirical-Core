@@ -385,8 +385,12 @@ EmpiricalGrammar::Application.routes.draw do
   resource :session
 
   resource :account, only: [:new, :create, :edit, :update] do
-    post :role, on: :member
+    member do
+      post :role
+      post :send_verification_email 
+    end
   end
+  get '/verify', to: 'accounts#verify'
   get '/sign-up/teacher', to: 'accounts#new'
   get '/sign-up/student', to: 'accounts#new'
   get '/sign-up/pick-school-type', to: 'accounts#new'

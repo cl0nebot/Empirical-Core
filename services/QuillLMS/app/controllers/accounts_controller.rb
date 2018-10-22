@@ -17,15 +17,44 @@ class AccountsController < ApplicationController
     render json: {}
   end
 
+  # Non-standard route for verifying that a user really owns the email they
+  # signed up with
+  def verify
+    success = false
+    verification_token = params[:t]
+    unless verification_token.blank?
+      u = User.find_by_verification_token(verification_token)
+      unless u.nil?
+        u.update(verified: true)
+        success = true
+      end
+    end
+    if success
+      redirect_to profile_path
+    else
+      redirect_to send_verification_email_path 
+    end
+  end
+
+
+  # POST request to send verification email sends a verification email to a user
+  # if they are not yet verified and do exist
+  def send_verification_email
+    user_email = params[:email]
+    u = User.find_by_email(user_email)
+    unless u.blank?
+      # TODO: set a verification token on the user 
+      # TODO: send email to user with link to /verify?t=JUST_GENERATED_TOKEN
+    end
+    render :nothing => true, :status => 204
+  end
+
+
   # creates a new user from params.
   # if a temporary_user_id is present in the session, it uses that
   # user record instead of creating a new one.
   def create
     role = params[:user].delete(:role)
-    puts 'some crap'
-    puts role
-    puts params[:user]
-    puts 'some crap end'
     @user.attributes = user_params
     @user.safe_role_assignment(role)
     @user.validate_username = true
