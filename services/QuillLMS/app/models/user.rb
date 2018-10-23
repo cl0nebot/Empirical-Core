@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   after_save  :update_invitee_email_address, if: Proc.new { self.email_changed? }
   after_create :generate_referrer_id, if: Proc.new { self.teacher? }
 
+  has_one :verification_token, dependent: :destroy
+
 
   has_secure_password validations: false
   has_one :auth_credential, dependent: :destroy

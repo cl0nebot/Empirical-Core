@@ -2698,6 +2698,41 @@ CREATE TABLE public.uuid_vs_str (
 
 
 --
+-- Name: verification_tokens; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.verification_tokens (
+    id integer NOT NULL,
+    user_id integer,
+    token text,
+    email_verified text,
+    verified boolean,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: verification_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.verification_tokens_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: verification_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.verification_tokens_id_seq OWNED BY public.verification_tokens.id;
+
+
+--
 -- Name: zipcodes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3170,6 +3205,13 @@ ALTER TABLE ONLY public.user_subscriptions ALTER COLUMN id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: verification_tokens id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.verification_tokens ALTER COLUMN id SET DEFAULT nextval('public.verification_tokens_id_seq'::regclass);
 
 
 --
@@ -3698,6 +3740,14 @@ ALTER TABLE ONLY public.user_subscriptions
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: verification_tokens verification_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.verification_tokens
+    ADD CONSTRAINT verification_tokens_pkey PRIMARY KEY (id);
 
 
 --
@@ -5614,4 +5664,6 @@ INSERT INTO schema_migrations (version) VALUES ('20180911171536');
 INSERT INTO schema_migrations (version) VALUES ('20181012155250');
 
 INSERT INTO schema_migrations (version) VALUES ('20181018195753');
+
+INSERT INTO schema_migrations (version) VALUES ('20181023173450');
 

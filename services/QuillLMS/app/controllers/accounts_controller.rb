@@ -17,15 +17,14 @@ class AccountsController < ApplicationController
     render json: {}
   end
 
-  # Non-standard route for verifying that a user really owns the email they
-  # signed up with
+  # Non-standard route for verifying email ownership
   def verify
     success = false
     verification_token = params[:t]
     unless verification_token.blank?
-      u = User.find_by_verification_token(verification_token)
-      unless u.nil?
-        u.update(verified: true)
+      vt = VerificationToken.find_by_token(verification_token)
+      unless vt.nil?
+        vt.update(verified: true)
         success = true
       end
     end
@@ -40,11 +39,21 @@ class AccountsController < ApplicationController
   # POST request to send verification email sends a verification email to a user
   # if they are not yet verified and do exist
   def send_verification_email
-    user_email = params[:email]
-    u = User.find_by_email(user_email)
-    unless u.blank?
-      # TODO: set a verification token on the user 
-      # TODO: send email to user with link to /verify?t=JUST_GENERATED_TOKEN
+    email_to_verify = params[:email]
+    vt = current_user.verification_token
+    unless vt.present? and vt.verified
+      # create or replace verification token if needed
+      if vt.nil? or vt.email_verified != email_to_verify
+        current_user.verification_token = VerificationToken.create(
+          token: SecureRandom.uuid()
+          email_verified: email_to_verify
+          verified: false
+        )
+      end
+      VerificationMailer.parent_verification_email(current_user.verification_token,
+                                                   current_user.name).deliver_now!
+    else
+      # the email is already verified 
     end
     render :nothing => true, :status => 204
   end
