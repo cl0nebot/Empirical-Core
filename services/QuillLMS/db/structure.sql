@@ -2664,9 +2664,7 @@ CREATE TABLE public.users (
     flags character varying[] DEFAULT '{}'::character varying[] NOT NULL,
     title character varying,
     time_zone character varying,
-    account_type character varying DEFAULT 'unknown'::character varying,
-    verified boolean DEFAULT false,
-    verification_token character varying
+    account_type character varying DEFAULT 'unknown'::character varying
 );
 
 
@@ -2687,6 +2685,16 @@ CREATE SEQUENCE public.users_id_seq
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: uuid_vs_str; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.uuid_vs_str (
+    xuuid uuid,
+    xstr text
+);
 
 
 --
@@ -3726,6 +3734,20 @@ CREATE UNIQUE INDEX classroom_invitee_index ON public.coteacher_classroom_invita
 --
 
 CREATE INDEX email_idx ON public.users USING gin (email public.gin_trgm_ops);
+
+
+--
+-- Name: idx_xstr; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_xstr ON public.uuid_vs_str USING btree (xstr);
+
+
+--
+-- Name: idx_xuuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_xuuid ON public.uuid_vs_str USING btree (xuuid);
 
 
 --
@@ -5592,8 +5614,4 @@ INSERT INTO schema_migrations (version) VALUES ('20180911171536');
 INSERT INTO schema_migrations (version) VALUES ('20181012155250');
 
 INSERT INTO schema_migrations (version) VALUES ('20181018195753');
-
-INSERT INTO schema_migrations (version) VALUES ('20181022202604');
-
-INSERT INTO schema_migrations (version) VALUES ('20181022203129');
 
