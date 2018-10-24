@@ -391,6 +391,7 @@ EmpiricalGrammar::Application.routes.draw do
       post :send_verification_email 
     end
   end
+  get '/self_study', to: 'students#index'
   get '/verify', to: 'accounts#verify'
   get '/sign-up/teacher', to: 'accounts#new'
   get '/sign-up/student', to: 'accounts#new'

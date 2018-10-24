@@ -128,7 +128,7 @@ class SignUpTeacher extends Component {
 
   render () {
     return (
-      <div className="new-teacher-account">
+      <div className="add-additional-class">
         <h3 className='sign-up-header'>Sign up for a Teacher Account</h3>
         <p className='support-p text-center'>We now support Google Classroom!</p>
         <AuthSignUp/>
