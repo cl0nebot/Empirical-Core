@@ -5,8 +5,12 @@ import StudentProfileUnit from './student_profile_unit.jsx';
 export default React.createClass({
 
   groupUnits() {
+    console.log('bearded wingman');
+    console.log(this.props.data);
+    console.log('end bearded wingman');
     const groupedUnits = _.groupBy(this.props.data, 'unit_id');
     const unitsWithGroupedActivities = {};
+    //TODO, pick up here tomorrow, the grouping function is destroying order
     for (const unit in groupedUnits) {
       const partitionedActivities = _.partition(groupedUnits[unit], activity => (activity.max_percentage != null));
       unitsWithGroupedActivities[unit] = {};
