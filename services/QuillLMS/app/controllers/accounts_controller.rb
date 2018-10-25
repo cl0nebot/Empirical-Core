@@ -30,7 +30,6 @@ class AccountsController < ApplicationController
         success = true
       end
     end
-    redirect_to profile_path
   end
 
 
