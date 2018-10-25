@@ -37,7 +37,8 @@ class AccountsController < ApplicationController
   # POST request to send verification email sends a verification email to a user
   # if they are not yet verified and do exist
   def send_verification_email
-    if current_user.nil?
+    age = params[:age].to_i
+    if current_user.nil? or age == 0
       render :nothing => true, :status => 400
       return
     end
@@ -49,11 +50,17 @@ class AccountsController < ApplicationController
         current_user.verification_token = VerificationToken.create(
           token: SecureRandom.uuid(),
           email_verified: email_to_verify,
-          verified: false
+          verified: false,
+          age_at_time_of_creation: age
         )
       end
-      VerificationMailer.parent_verification_email(current_user.verification_token,
+      if age < 13
+        VerificationMailer.parent_verification_email(current_user.verification_token,
                                                    current_user.name).deliver_now!
+      else
+        VerificationMailer.student_verification_email(current_user.verification_token,
+                                                   current_user.name).deliver_now!
+      end
     else
       # the email is already verified 
     end
