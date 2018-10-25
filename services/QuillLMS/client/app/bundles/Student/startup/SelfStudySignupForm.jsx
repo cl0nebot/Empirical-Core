@@ -11,12 +11,13 @@ class SelfStudySignupForm extends Component {
     this.state = {
       errors: [],
       email: null,
-      over13: false
+      age: 0
     }
     this.under13Fields = [
       {
           name: 'email',
           label: 'Email for parent or gaurdian',
+          placeholder: 'mygaurdian@example.com',
           errorLabel: 'Email for parent or gaurdian'
       }
     ];
@@ -24,10 +25,10 @@ class SelfStudySignupForm extends Component {
       {
           name: 'email',
           label: 'Personal Email',
+          placeholder: 'me@example.com',
           errorLabel: 'Personal Email'
       }
     ];
-    this.updateOver13 = this.updateOver13.bind(this);
     this.uponSelfStudySignup = this.uponSelfStudySignup.bind(this);
     this.selfStudySignupError = this.selfStudySignupError.bind(this);
     this.selfStudySignup = this.selfStudySignup.bind(this);
@@ -52,19 +53,17 @@ class SelfStudySignupForm extends Component {
   }
 
   selfStudySignup() {
-    alert('gon post');
     $.ajax({
       type: 'POST',
       dataType: "json",
       url: '/account/send_verification_email',
       data: {
         email: this.state.email,
-        over13: this.state.over13
+        age: this.state.age
       },
       success: this.uponSelfStudySignup,
       error: this.selfStudySignupError
     });
-    alert('done ajaxed');
   }
 
   errorMessage() {
@@ -74,8 +73,11 @@ class SelfStudySignupForm extends Component {
   }
   
   conditionalFields() {
+    let styles = {
+      width: '220px',
+    };
     const that = this
-    if (this.state.over13) {
+    if (this.state.age >= 13) {
       return this.over13Fields.map(function(field) {
         const type = field.name === 'password' ? 'password' : 'text'
         const error = that.state.errors[field.name]
@@ -83,7 +85,9 @@ class SelfStudySignupForm extends Component {
           : <span />
         return <div className="text-input-row" key={field.name}>
           <div className="form-label">{field.label}</div>
-          <input id={field.name} placeholder={field.label} type={type} onChange={that.update}/>
+          <input
+            style={styles}
+            id={field.name} placeholder={field.placeholder} type={type} onChange={that.update}/>
           {error}
         </div>
       }
@@ -96,7 +100,9 @@ class SelfStudySignupForm extends Component {
          : <span />
         return <div className="text-input-row" key={field.name}>
           <div className="form-label">{field.label}</div>
-          <input id={field.name} placeholder={field.label} type={type} onChange={that.update}/>
+          <input 
+            style={styles}
+            id={field.name} placeholder={field.placeholder} type={type} onChange={that.update}/>
           {error}
         </div>
         }
@@ -104,24 +110,30 @@ class SelfStudySignupForm extends Component {
     }
   }
 
-  updateOver13(event) {
-    this.updateKeyValue('over13', event.target.checked);
-  }
-
   update(e) {
     this.updateKeyValue(e.target.id, e.target.value)
   }
 
   render() {
+    let styles = {
+      width: '60px',
+    };
     return (
-      <div className="add-additional-class">
-        <h3 className='sign-up-header'>Sign up for Self Study</h3>
-        <div className='need-a-border'/>
-        {this.conditionalFields()}
-        <input type='checkbox' name='over13' ref='over13' onChange={this.updateOver13} checked={this.state.over13}/>
-        <p>I am over the age of 13.</p>
-        <button className='sign-up-button button-green' onClick={this.selfStudySignup}>Sign Up</button>
-        {this.errorMessage()}
+      <div id='add-additional-class'>
+        <div className='additional-class stage-1 text-center'>
+          <h1>Sign up for Self Study</h1>
+          <div className="form-label">How old are you?</div>
+          <input id='age'
+            type="number"
+            min="1" max="123" step="1"
+            style={styles}
+            className='class-input'
+            onChange={e => this.update(e)} placeholder='12'></input>
+          <br/>
+          {this.conditionalFields()}
+          <button className='button-green' onClick={this.selfStudySignup}>Sign Up</button>
+          <br/>
+        </div>
       </div>
     );
   }
