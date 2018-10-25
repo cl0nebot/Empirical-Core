@@ -1,1 +1,6 @@
-<h1>Thanks for verifying your account.</h1>
+<% if @success %>
+  <h1>Thanks for verifying your account.</h1>
+<% else %>
+  <h1>We were unable to verify your account; that's all we know.</h1>
+<% end %>
+

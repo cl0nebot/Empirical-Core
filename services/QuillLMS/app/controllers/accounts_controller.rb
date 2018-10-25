@@ -21,13 +21,13 @@ class AccountsController < ApplicationController
 
   # Non-standard route for verifying email ownership
   def verify
-    success = false
+    @success = false
     verification_token = params[:t]
     unless verification_token.blank?
       vt = VerificationToken.find_by_token(verification_token)
       unless vt.nil?
         vt.update(verified: true)
-        success = true
+        @success = true
       end
     end
   end
