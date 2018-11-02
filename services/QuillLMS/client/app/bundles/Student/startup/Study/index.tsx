@@ -22,6 +22,7 @@ const selfStudyQuery = `
     activityCategories {
       id
       name
+      orderNumber
       activities {
         id
         name

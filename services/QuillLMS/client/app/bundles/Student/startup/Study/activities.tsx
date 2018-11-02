@@ -11,10 +11,13 @@ class Activities extends React.Component<ActivitiesProps, any> {
     super(props);
   }
 
-  renderCategories(activities: any[]) {
-    return activities.map((category) => {
+  renderCategories(categories: any[]) {
+    const sortedCategories = categories.slice().sort(function(a,b){
+      return a.orderNumber - b.orderNumber
+    })
+    return sortedCategories.map((category) => {
       return (
-        <div className="fake-table">
+        <div className="fake-table" key={category.id}>
           <div className="header">
             <span className="header-text">{category.name}</span>
             <span className="header-list">
@@ -35,7 +38,7 @@ class Activities extends React.Component<ActivitiesProps, any> {
   renderActivities(activities: any[]) { 
     return activities.map((activity) => {
       return (
-        <div className='line'>
+        <div className='line' key={activity.id}>
           <div className="row-list-beginning pull-left">
             <div className="activate-tooltip icon-link icon-wrapper icon-green icon-diagnostic"></div>
             <div className="icons-description-wrapper">
