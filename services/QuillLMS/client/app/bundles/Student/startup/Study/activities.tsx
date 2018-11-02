@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityCategory, Activity, ActivityOrder, ActivityScore } from '.';
-
+import ActivityRow from './activity';
 export interface ActivitiesProps {
   activities: ActivityCategory[];
   recommendations: number[];
@@ -48,19 +48,7 @@ class Activities extends React.Component<ActivitiesProps, any> {
     
     return activities.map((activity) => {
       return (
-        <div className='line' key={activity.id}>
-          <div className="row-list-beginning pull-left">
-            <div className="activate-tooltip icon-link icon-wrapper icon-green icon-diagnostic"></div>
-            <div className="icons-description-wrapper">
-              <p className="title title-v-centered">{activity.name} {renderScore(this.props.scores, activity)}</p>
-
-            </div>
-          </div>
-          <div className="row-list-end">
-            <span></span>
-            <p className="title-v-centered text-right">Play</p>
-          </div>
-        </div>
+        <ActivityRow activity={activity}, scores={this.props.scores} key={activity.id} />
       )
     })
   }
@@ -74,9 +62,5 @@ class Activities extends React.Component<ActivitiesProps, any> {
   }
 }
 
-function renderScore(scores: ActivityScore[], activity: Activity) {
-  const checkedScore: ActivityScore | undefined = scores.find(score => score.activityId == activity.id);
-  return checkedScore ? `SCORE: ${Math.round(checkedScore.percentage * 100)}%`: undefined;
-}
 
 export default Activities
