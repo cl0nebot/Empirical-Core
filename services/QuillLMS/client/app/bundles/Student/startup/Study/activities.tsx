@@ -1,4 +1,5 @@
 import React from 'react';
+import { ActivityCategory } from '.';
 
 export interface ActivitiesProps {
   activities: any[]
@@ -11,7 +12,7 @@ class Activities extends React.Component<ActivitiesProps, any> {
     super(props);
   }
 
-  renderCategories(categories: any[]) {
+  renderCategories(categories: ActivityCategory[]) {
     const sortedCategories = categories.slice().sort(function(a,b){
       return a.orderNumber - b.orderNumber
     })
