@@ -42,11 +42,17 @@ export interface Activity {
   orderNumber: number
 }
 
+export interface ActivityOrder {
+  activityId: number
+  orderNumber: number
+}
+
 export interface ActivityCategory {
   id: number
   name: string
   orderNumber: number
   activities: Activity[]
+  activityOrders: ActivityOrder[]
 }
 
 export interface ActivityScore {

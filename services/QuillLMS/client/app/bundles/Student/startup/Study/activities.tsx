@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityCategory } from '.';
+import { ActivityCategory, Activity } from '.';
 
 export interface ActivitiesProps {
   activities: any[]
@@ -29,14 +29,14 @@ class Activities extends React.Component<ActivitiesProps, any> {
             </span>
           </div>
          
-          {this.renderActivities(category.activities)}
+          {this.renderActivities(category.activities, category.activityOrders)}
           
         </div>
       )
     })
   }
 
-  renderActivities(activities: any[]) { 
+  renderActivities(activities: Activity[], activityOrders: ActivityOrder[]) { 
     return activities.map((activity) => {
       return (
         <div className='line' key={activity.id}>
