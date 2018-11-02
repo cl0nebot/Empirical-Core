@@ -17,6 +17,9 @@ class Activities extends React.Component<ActivitiesProps, any> {
       return a.orderNumber - b.orderNumber
     })
     return sortedCategories.map((category) => {
+      if (category.activities.length == 0) {
+        return
+      }
       return (
         <div className="fake-table" key={category.id}>
           <div className="header">

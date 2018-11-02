@@ -8,7 +8,7 @@ class Types::ActivityCategoryType < Types::BaseObject
   field :activities, [Types::ActivityType], null: false
 
   def activities 
-    return object.activities.where(flags: ["production"])
+    return object.activities.where(flags: ["production"], activity_classification_id: [1, 2, 5])
   end
 
   field :activity_orders, [Types::ActivityOrderType], null: false
