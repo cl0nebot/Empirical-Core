@@ -1,10 +1,10 @@
 import React from 'react';
-import { ActivityCategory, Activity, ActivityOrder } from '.';
+import { ActivityCategory, Activity, ActivityOrder, ActivityScore } from '.';
 
 export interface ActivitiesProps {
-  activities: any[]
-  recommendations: any
-  scores: any
+  activities: ActivityCategory[];
+  recommendations: number[];
+  scores: ActivityScore[];
 }
 
 class Activities extends React.Component<ActivitiesProps, any> {
@@ -42,13 +42,15 @@ class Activities extends React.Component<ActivitiesProps, any> {
       const b_order_number = activityOrders.find((order) => order.activityId == b.id).orderNumber;
       return a_order_number - b_order_number;
     })
+    
     return activities.map((activity) => {
       return (
         <div className='line' key={activity.id}>
           <div className="row-list-beginning pull-left">
             <div className="activate-tooltip icon-link icon-wrapper icon-green icon-diagnostic"></div>
             <div className="icons-description-wrapper">
-              <p className="title title-v-centered">{activity.name}</p>
+              <p className="title title-v-centered">{activity.name} {renderScore(this.props.scores, activity)}</p>
+
             </div>
           </div>
           <div className="row-list-end">
@@ -67,6 +69,11 @@ class Activities extends React.Component<ActivitiesProps, any> {
       </div>
     );
   }
+}
+
+function renderScore(scores: ActivityScore[], activity: Activity) {
+  const checkedScore: ActivityScore | undefined = scores.find(score => score.activityId == activity.id);
+  return checkedScore ? `SCORE: ${Math.trunc(checkedScore.percentage * 100)}%`: undefined;
 }
 
 export default Activities
