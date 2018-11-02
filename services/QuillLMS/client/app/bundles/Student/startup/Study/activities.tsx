@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityCategory, Activity } from '.';
+import { ActivityCategory, Activity, ActivityOrder } from '.';
 
 export interface ActivitiesProps {
   activities: any[]
@@ -37,6 +37,11 @@ class Activities extends React.Component<ActivitiesProps, any> {
   }
 
   renderActivities(activities: Activity[], activityOrders: ActivityOrder[]) { 
+    const sortedActivities = activities.slice().sort(function(a, b){
+      const a_order_number = activityOrders.find((order) => order.activityId == a.id).orderNumber;
+      const b_order_number = activityOrders.find((order) => order.activityId == b.id).orderNumber;
+      return a_order_number - b_order_number;
+    })
     return activities.map((activity) => {
       return (
         <div className='line' key={activity.id}>
