@@ -27,10 +27,53 @@ const selfStudyQuery = `
         id
         name
       }
+      activityOrders{
+        orderNumber
+        activityId
+      }
     }
   }
 `;
 
+export interface Activity {
+  id: number
+  name: string
+  activityClassificationId: number
+  orderNumber: number
+}
+
+export interface ActivityCategory {
+  id: number
+  name: string
+  orderNumber: number
+  activities: Activity[]
+}
+
+export interface ActivityScore {
+  activityId: number
+  percentage: number
+  updatedAt: number
+  inProgress: number
+}
+
+export interface User {
+  id: number
+  name: string
+  activityScores: ActivityScore[]
+  recommendedActivities: number[]
+  completedDiagnostic: boolean
+}
+
+export interface SelfStudyQueryResponse {
+  currentUser: User
+  activityCategories: ActivityCategory[]
+}
+
+export interface QueryState {
+  loading: boolean
+  error: boolean
+  data: SelfStudyQueryResponse
+}
 
 export interface StudyProps {
 }
@@ -61,4 +104,4 @@ export default function Study() {
       </div>
     </ApolloProvider>
   );
-}
+};

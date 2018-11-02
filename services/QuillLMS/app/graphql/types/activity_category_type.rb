@@ -10,4 +10,11 @@ class Types::ActivityCategoryType < Types::BaseObject
   def activities 
     return object.activities
   end
+
+  field :activity_orders, [Types::ActivityOrder], null: false
+
+  def activity_orders
+    return object.activity_category_activities
+  end
+
 end
