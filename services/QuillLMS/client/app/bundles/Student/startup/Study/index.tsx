@@ -34,38 +34,30 @@ const selfStudyQuery = `
 export interface StudyProps {
 }
 
-class Study extends React.Component<StudyProps, any> {
-  constructor(props: StudyProps) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <ApolloProvider client={client}>
-        <div className="container">
-        <Query
-          query={gql(selfStudyQuery)}
-        >
-        {({ loading, error, data }) => {
-          if (loading) return <p>Loading...</p>;
-          if (error) return <p>Error :(</p>;
-          const payload = data;
-          return (
-            <div>
-              <p>{data.currentUser.name}</p>
-              <Activities 
-                activities={data.activityCategories} 
-                scores={data.currentUser.activityScores}
-                recommendations={data.currentUser.recommendedActivities}
-              />
-            </div>
-          )
-        }}
-          </Query>
-        </div>
-      </ApolloProvider>
-    );
-  }
+export default function Study() {
+  return (
+    <ApolloProvider client={client}>
+      <div className="container">
+      <Query
+        query={gql(selfStudyQuery)}
+      >
+      {({ loading, error, data }) => {
+        if (loading) return <p>Loading...</p>;
+        if (error) return <p>Error :(</p>;
+        const payload = data;
+        return (
+          <div>
+            <p>{data.currentUser.name}</p>
+            <Activities 
+              activities={data.activityCategories} 
+              scores={data.currentUser.activityScores}
+              recommendations={data.currentUser.recommendedActivities}
+            />
+          </div>
+        )
+      }}
+        </Query>
+      </div>
+    </ApolloProvider>
+  );
 }
-
-export default Study
