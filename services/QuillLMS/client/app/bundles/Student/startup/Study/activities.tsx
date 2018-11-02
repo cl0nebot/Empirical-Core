@@ -73,7 +73,7 @@ class Activities extends React.Component<ActivitiesProps, any> {
 
 function renderScore(scores: ActivityScore[], activity: Activity) {
   const checkedScore: ActivityScore | undefined = scores.find(score => score.activityId == activity.id);
-  return checkedScore ? `SCORE: ${Math.trunc(checkedScore.percentage * 100)}%`: undefined;
+  return checkedScore ? `SCORE: ${Math.round(checkedScore.percentage * 100)}%`: undefined;
 }
 
 export default Activities
