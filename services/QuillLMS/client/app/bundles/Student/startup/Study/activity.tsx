@@ -7,8 +7,10 @@ function getScoreForActivity(scores: ActivityScore[], activity: Activity): numbe
   return checkedScore ? checkedScore.percentage : null
 }
 
-function renderScore(score: number|null): string|undefined {
-  return score ? `SCORE: ${Math.round(score * 100)}%`: undefined;
+function renderPlayLink(score: number|null, activityId: number): string|undefined {
+  const url = `/activity_sessions/anonymous?activity_id=${activityId}`
+  const copy = score ? 'Replay Activity' : 'Start Activity';
+  return <a href={url}>{copy}</a>
 }
 
 declare interface ActivityRowProps {
@@ -29,7 +31,7 @@ export default ({activity, scores}: ActivityRowProps) => {
       </div>
       <div className="row-list-end">
         <span></span>
-        <p className="title-v-centered text-right">Play</p>
+        <p className="title-v-centered text-right">{renderPlayLink(percentage, activity.id)}</p>
       </div>
     </div>
   )
