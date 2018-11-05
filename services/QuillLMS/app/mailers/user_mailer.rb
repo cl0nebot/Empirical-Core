@@ -43,7 +43,7 @@ class UserMailer < ActionMailer::Base
     @user = user
     @lessons = lessons
     @unit = unit
-    mail from: "Amr Thameen <amr.thameen@quill.org>", to: user.email, subject: "Next Steps for the Lessons in Your New Activity Pack, #{@unit.name}"
+    mail from: "Hannah Monk <hannah.monk@quill.org>", to: user.email, subject: "Next Steps for the Lessons in Your New Activity Pack, #{@unit.name}"
   end
 
   def premium_user_subscription_email(user)
@@ -61,7 +61,7 @@ class UserMailer < ActionMailer::Base
   def new_admin_email(user, school)
     @user = user
     @school = school
-    mail from: "Becca Garrison <becca@quill.org>", to: user.email, subject: "#{user.first_name}, you are now an admin on Quill!"
+    mail from: "Maddy Maher <maddy.maher@quill.org>", to: user.email, subject: "#{user.first_name}, you are now an admin on Quill!"
   end
 
   def activated_referral_email(referrer_hash, referral_hash)
@@ -77,7 +77,7 @@ class UserMailer < ActionMailer::Base
 
   def premium_missing_school_email(user)
     @user = user
-    mail to: ["Becca Garrison <becca@quill.org>", "Amr Thameen <amr@quill.org>", "Emilia Friedberg <emilia@quill.org>"], subject: "#{user.name} has purchased School Premium for a missing school"
+    mail to: ["Maddy Maher <maddy.maher@quill.org>", "Emilia Friedberg <emilia.friedberg@quill.org>"], subject: "#{user.name} has purchased School Premium for a missing school"
   end
 
 end
