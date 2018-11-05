@@ -26,6 +26,7 @@ const selfStudyQuery = `
       activities {
         id
         name
+        activityClassificationId
       }
       activityOrders{
         orderNumber
