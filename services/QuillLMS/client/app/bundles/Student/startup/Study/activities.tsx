@@ -1,15 +1,20 @@
 import React from 'react';
 import { ActivityCategory, Activity, ActivityOrder, ActivityScore } from '.';
-import ActivityRow from './activity';
+import Category from './category'
 export interface ActivitiesProps {
   activities: ActivityCategory[];
   recommendations: number[];
   scores: ActivityScore[];
 }
 
+
+
 class Activities extends React.Component<ActivitiesProps, any> {
   constructor(props: ActivitiesProps) {
     super(props);
+    this.state = {
+      open: false
+    }
   }
 
   renderCategories(categories: ActivityCategory[]) {
@@ -20,38 +25,11 @@ class Activities extends React.Component<ActivitiesProps, any> {
       if (category.activities.length == 0) {
         return
       }
-      return (
-        <div className="fake-table" key={category.id}>
-          <div className="header">
-            <span className="header-text">{category.name}</span>
-            <span className="header-list">
-              <span></span>
-              <span className="header-list-counter">
-                {category.activities.length}
-              </span>
-            </span>
-          </div>
-         
-          {this.renderActivities(category.activities, category.activityOrders)}
-          
-        </div>
-      )
+      return <Category category={category} scores={this.props.scores}/>
     })
   }
 
-  renderActivities(activities: Activity[], activityOrders: ActivityOrder[]) { 
-    const sortedActivities = activities.slice().sort(function(a, b){
-      const a_order_number = activityOrders.find((order) => order.activityId == a.id).orderNumber;
-      const b_order_number = activityOrders.find((order) => order.activityId == b.id).orderNumber;
-      return a_order_number - b_order_number;
-    })
-    
-    return activities.map((activity) => {
-      return (
-        <ActivityRow activity={activity}, scores={this.props.scores} key={activity.id} />
-      )
-    })
-  }
+  
 
   render() {
     return (
