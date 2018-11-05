@@ -1,10 +1,12 @@
 import React from 'react';
 import { ActivityCategory, ActivityScore, ActivityOrder, Activity } from '.';
 import ActivityRow from './activity';
+import activity from './activity';
 
 export interface CategoryProps {
   category: ActivityCategory
   scores: ActivityScore[]
+  recommendations: number[]
 }
 
 export interface CategoryState {
@@ -16,6 +18,14 @@ function numberOfCompleteActivities(scores: ActivityScore[], activities: Activit
   return activities.map((activity) => activity.id).reduce((prev, current, i, activityIds) => {
     const score = scores.find(score => score.activityId == activityIds[i])
     return score ? prev + 1 : prev + 0
+  }, 0)
+}
+
+function numberOfRecommendations(recommendations: number[], activities: Activity[]): number {
+  return activities.map((activity) => activity.id).reduce((prev, current, i, activityIds) => {
+    console.log(recommendations, current, recommendations.indexOf(current))
+    const recommended = recommendations.indexOf(parseInt(current))
+    return recommended != -1 ? prev + 1 : prev + 0
   }, 0)
 }
 
@@ -48,12 +58,21 @@ class Category extends React.Component<CategoryProps, CategoryState> {
     })
   }
 
+  renderRecommendationsCopy(recommendations: number[], activities: Activity[]): JSX.Element|null {
+    const countOfRecommendations = numberOfRecommendations(recommendations, activities)
+    if (countOfRecommendations > 0) {
+      return (
+        <span style={styles.recommended}>{`${countOfRecommendations} Recommended Activities`} <i className="fa fa-star"></i></span>
+      )
+    }
+  }
+
   render () {
-    const {category, scores} = this.props
+    const {category, scores, recommendations} = this.props
     return (
       <div className="fake-table" key={category.id}>
         <div className="header" onClick={this.toggleCategoryOpen.bind(this)}>
-          <span className="header-text">{category.name}</span>
+          <span className="header-text">{category.name} {this.renderRecommendationsCopy(recommendations, category.activities)}</span>
           <span className="header-list">
             <span></span>
             <span className="header-list-counter">
@@ -68,5 +87,17 @@ class Category extends React.Component<CategoryProps, CategoryState> {
     )
   }
 }
+
+const styles = {
+  recommended: {
+    border: "1px solid #eda41b",
+    padding: "0 10px",
+    borderRadius: 15,
+    backgroundColor: "#f1f1f1",
+    color: "#eda41b",
+    marginLeft: 10,
+    fontWeight: 600
+  }
+} 
 
 export default Category

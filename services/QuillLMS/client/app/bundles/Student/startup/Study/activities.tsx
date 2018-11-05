@@ -25,7 +25,7 @@ class Activities extends React.Component<ActivitiesProps, any> {
       if (category.activities.length == 0) {
         return
       }
-      return <Category category={category} scores={this.props.scores}/>
+      return <Category category={category} scores={this.props.scores} recommendations={this.props.recommendations}/>
     })
   }
 
