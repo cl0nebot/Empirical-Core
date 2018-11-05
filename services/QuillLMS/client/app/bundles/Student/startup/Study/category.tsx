@@ -53,7 +53,12 @@ class Category extends React.Component<CategoryProps, CategoryState> {
     
     return activities.map((activity) => {
       return (
-        <ActivityRow activity={activity} scores={this.props.scores} key={activity.id} />
+        <ActivityRow 
+          activity={activity} 
+          scores={this.props.scores} 
+          recommendations={this.props.recommendations} 
+          key={activity.id} 
+        />
       )
     })
   }
