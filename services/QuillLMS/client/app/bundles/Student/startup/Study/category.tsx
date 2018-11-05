@@ -11,6 +11,14 @@ export interface CategoryState {
   open: boolean
 }
 
+
+function numberOfCompleteActivities(scores: ActivityScore[], activities: Activity[]): number {
+  return activities.map((activity) => activity.id).reduce((prev, current, i, activityIds) => {
+    const score = scores.find(score => score.activityId == activityIds[i])
+    return score ? prev + 1 : prev + 0
+  }, 0)
+}
+
 class Category extends React.Component<CategoryProps, CategoryState> {
   constructor(props: CategoryProps) {
     super(props);
@@ -41,7 +49,7 @@ class Category extends React.Component<CategoryProps, CategoryState> {
   }
 
   render () {
-    const {category} = this.props
+    const {category, scores} = this.props
     return (
       <div className="fake-table" key={category.id}>
         <div className="header" onClick={this.toggleCategoryOpen.bind(this)}>
@@ -49,7 +57,7 @@ class Category extends React.Component<CategoryProps, CategoryState> {
           <span className="header-list">
             <span></span>
             <span className="header-list-counter">
-              {category.activities.length}
+            {numberOfCompleteActivities(scores, category.activities)} / {category.activities.length} Activities Complete
             </span>
           </span>
         </div>
