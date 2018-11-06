@@ -4,6 +4,7 @@ import client from '../../../../modules/apollo';
 import gql from "graphql-tag";
 import Activities from './activities';
 import Diagnostic from './diagnostic';
+import Stats from './stats';
 
 const selfStudyQuery = `
   {
@@ -98,12 +99,14 @@ export default function Study() {
         if (error) return <p>Error :(</p>;
         const payload = data;
         return (
-          <div>
-            <p>{data.currentUser.name}</p>
-            <Diagnostic 
-              completedDiagnostic={data.currentUser.completedDiagnostic} 
-              recommendations={data.currentUser.recommendedActivities}
-            />
+          <div style={{padding: '40 0'}}>
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+              <Diagnostic 
+                completedDiagnostic={data.currentUser.completedDiagnostic} 
+                recommendations={data.currentUser.recommendedActivities}
+              />
+              <Stats />
+            </div>
             <Activities 
               activities={data.activityCategories} 
               scores={data.currentUser.activityScores}
