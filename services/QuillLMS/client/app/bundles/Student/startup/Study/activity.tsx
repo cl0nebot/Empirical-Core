@@ -8,7 +8,7 @@ function getScoreForActivity(scores: ActivityScore[], activity: Activity): numbe
   return checkedScore ? checkedScore.percentage : null
 }
 
-function renderPlayLink(score: number|null, activityId: number): string|undefined {
+function renderPlayLink(score: number|null, activityId: number): JSX.Element {
   const url = `/activity_sessions/anonymous?activity_id=${activityId}`
   const copy = score ? 'Replay Activity' : 'Start Activity';
   return <a href={url}>{copy}</a>

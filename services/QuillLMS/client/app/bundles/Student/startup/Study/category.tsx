@@ -23,7 +23,6 @@ function numberOfCompleteActivities(scores: ActivityScore[], activities: Activit
 
 function numberOfRecommendations(recommendations: number[], activities: Activity[]): number {
   return activities.map((activity) => activity.id).reduce((prev, current, i, activityIds) => {
-    console.log(recommendations, current, recommendations.indexOf(current))
     const recommended = recommendations.indexOf(parseInt(current))
     return recommended != -1 ? prev + 1 : prev + 0
   }, 0)

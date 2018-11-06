@@ -3,6 +3,7 @@ import { ApolloProvider, Query, } from "react-apollo";
 import client from '../../../../modules/apollo';
 import gql from "graphql-tag";
 import Activities from './activities';
+import Diagnostic from './diagnostic';
 
 const selfStudyQuery = `
   {
@@ -99,6 +100,10 @@ export default function Study() {
         return (
           <div>
             <p>{data.currentUser.name}</p>
+            <Diagnostic 
+              completedDiagnostic={data.currentUser.completedDiagnostic} 
+              recommendations={data.currentUser.recommendedActivities}
+            />
             <Activities 
               activities={data.activityCategories} 
               scores={data.currentUser.activityScores}
