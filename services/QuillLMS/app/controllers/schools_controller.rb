@@ -5,7 +5,8 @@ class SchoolsController < ApplicationController
   def index
     @radius = params[:radius].presence || 5
     @limit = params[:limit].presence || 10
-    @lat, @lng, @prefix = params[:lat],params[:lng], params[:prefix]
+    @lat, @lng = params[:lat],params[:lng]
+    @zipcode, @prefix = extract_prefix_and_zipcode(params[:search]) 
     @schools = []
 
     school_ids = []
@@ -103,6 +104,12 @@ class SchoolsController < ApplicationController
 
 
   private
+
+  def extract_prefix_and_zipcode(search)
+    zip = search.match(/\d{5}/).to_s
+    prefix = search.gsub(/\d{5}/, "")
+    return zip, prefix
+  end
 
 
 
