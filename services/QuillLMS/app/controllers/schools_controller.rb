@@ -33,8 +33,12 @@ class SchoolsController < ApplicationController
       end
     end
 
-    if @lat.present? and @lng.present? and @schools.empty?
-      zip_arr = ZipcodeInfo.isinradius([@lat.to_f, @lng.to_f], @radius.to_i).map {|z| z.zipcode}
+    if (@lat.present? and @lng.present?) or @zipcode.present? and @schools.empty?
+      if @zipcode.present?
+        zip_arr = [@zipcode]
+      else
+        zip_arr = ZipcodeInfo.isinradius([@lat.to_f, @lng.to_f], @radius.to_i).map {|z| z.zipcode}
+      end
       if zip_arr.present?
         @schools = School.select("*, COUNT(DISTINCT schools_users.id) AS number_of_teachers")
         .joins('JOIN schools_users ON schools_users.school_id = schools.id')
