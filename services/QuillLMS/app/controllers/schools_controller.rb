@@ -18,7 +18,6 @@ class SchoolsController < ApplicationController
       .where(id: school_ids)
       .group("schools.id, schools_users.school_id, schools_users.user_id, schools_users.id")
       .limit(@limit)
-      puts 'CACHE HIT 1'
     end
 
     if @schools.empty? and school_ids.present?
@@ -30,7 +29,6 @@ class SchoolsController < ApplicationController
       ).group("schools.id, schools_users.school_id, schools_users.user_id, schools_users.id")
       .limit(@limit)
       unless @schools.empty?
-        puts 'CACHE HIT 2'
       end
     end
 
