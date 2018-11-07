@@ -9,4 +9,5 @@ class Types::ActivityScoreType < Types::BaseObject
   def in_progress
     object.resume_link == 1
   end
+
 end
