@@ -39,7 +39,7 @@ const selfStudyQuery = `
 `;
 
 export interface Activity {
-  id: number
+  id: string
   name: string
   activityClassificationId: number
   orderNumber: number
@@ -135,6 +135,7 @@ class SelfStudyContainer extends React.Component<StudyProps, StudyState> {
                 activities={data.activityCategories} 
                 scores={data.currentUser.activityScores}
                 recommendations={data.currentUser.recommendedActivities}
+                filterRecommendations={this.state.filterRecommendations}
               />
             </div>
           )

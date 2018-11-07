@@ -5,9 +5,16 @@ export interface ActivitiesProps {
   activities: ActivityCategory[];
   recommendations: number[];
   scores: ActivityScore[];
+  filterRecommendations: boolean;
 }
 
+function filterActivities(activities: Activity[], recommendations: number[]):Activity[] {
 
+  return activities.filter(activity => {
+    return recommendations.indexOf(parseInt(activity.id)) != -1
+  })
+
+}
 
 class Activities extends React.Component<ActivitiesProps, any> {
   constructor(props: ActivitiesProps) {
@@ -22,10 +29,13 @@ class Activities extends React.Component<ActivitiesProps, any> {
       return a.orderNumber - b.orderNumber
     })
     return sortedCategories.map((category) => {
-      if (category.activities.length == 0) {
+      // filter out activities that are not in recommendations array of filterRecommendations is true
+      const activities = this.props.filterRecommendations ? filterActivities(category.activities, this.props.recommendations) : category.activities;
+
+      if (activities.length == 0) {
         return
       }
-      return <Category category={category} scores={this.props.scores} recommendations={this.props.recommendations}/>
+      return <Category category={category} scores={this.props.scores} recommendations={this.props.recommendations} key={category.id}/>
     })
   }
 
