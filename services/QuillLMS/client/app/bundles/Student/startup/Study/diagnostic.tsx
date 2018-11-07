@@ -3,6 +3,8 @@ import React from 'react'
 export interface DiagnosticProps {
   completedDiagnostic: boolean
   recommendations: number[]
+  toggleFilterRecommendations(): void
+  filterRecommendations: boolean
 }
 
 class Diagnostic extends React.Component<DiagnosticProps, any> {
@@ -10,7 +12,10 @@ class Diagnostic extends React.Component<DiagnosticProps, any> {
   renderCardBody(completedDiagnostic:boolean): JSX.Element {
     if (completedDiagnostic) {
       return (
-        <p>You completed the diagnostic and have been recommended {this.props.recommendations.length} activities.</p>
+        <div>
+          <p>You completed the diagnostic and have been recommended {this.props.recommendations.length} activities.</p>
+          <button onClick={this.props.toggleFilterRecommendations}>{this.props.filterRecommendations ? "Show all activities" : "Show only recommendations"}</button>
+        </div>
       )
     } else {
       return (

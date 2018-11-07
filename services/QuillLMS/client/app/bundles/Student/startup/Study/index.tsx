@@ -87,36 +87,64 @@ export interface QueryState {
 export interface StudyProps {
 }
 
-export default function Study() {
-  return (
-    <ApolloProvider client={client}>
-      <div className="container">
-      <Query
-        query={gql(selfStudyQuery)}
-      >
-      {({ loading, error, data }) => {
-        if (loading) return <p>Loading...</p>;
-        if (error) return <p>Error :(</p>;
-        const payload = data;
-        return (
-          <div style={{padding: '40 0'}}>
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-              <Diagnostic 
-                completedDiagnostic={data.currentUser.completedDiagnostic} 
+export interface StudyState {
+  filterRecommendations: boolean
+}
+
+
+class SelfStudyContainer extends React.Component<StudyProps, StudyState> {
+  constructor(props) {
+    super(props)
+   
+    this.state = {
+      filterRecommendations: false
+    }
+
+    this.toggleFilterRecommendations = this.toggleFilterRecommendations.bind(this)
+  }
+
+  toggleFilterRecommendations(): void {
+    this.setState({
+      filterRecommendations: !this.state.filterRecommendations
+    })
+  }
+
+  render() {
+    return (
+      <ApolloProvider client={client}>
+        <div className="container">
+        <Query
+          query={gql(selfStudyQuery)}
+        >
+        {({ loading, error, data }) => {
+          if (loading) return <p>Loading...</p>;
+          if (error) return <p>Error :(</p>;
+          const payload = data;
+          return (
+            <div style={{padding: '40 0'}}>
+              <div style={{display: 'flex', flexDirection: 'row'}}>
+                <Diagnostic
+                  filterRecommendations={this.state.filterRecommendations}
+                  toggleFilterRecommendations={this.toggleFilterRecommendations}
+                  completedDiagnostic={data.currentUser.completedDiagnostic} 
+                  recommendations={data.currentUser.recommendedActivities}
+                />
+                <Stats />
+              </div>
+              <Activities 
+                activities={data.activityCategories} 
+                scores={data.currentUser.activityScores}
                 recommendations={data.currentUser.recommendedActivities}
               />
-              <Stats />
             </div>
-            <Activities 
-              activities={data.activityCategories} 
-              scores={data.currentUser.activityScores}
-              recommendations={data.currentUser.recommendedActivities}
-            />
-          </div>
-        )
-      }}
-        </Query>
-      </div>
-    </ApolloProvider>
-  );
-};
+          )
+        }}
+          </Query>
+        </div>
+      </ApolloProvider>
+    );
+  };
+
+}
+
+export default SelfStudyContainer
