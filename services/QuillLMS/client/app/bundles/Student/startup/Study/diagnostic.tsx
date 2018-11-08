@@ -14,7 +14,7 @@ class Diagnostic extends React.Component<DiagnosticProps, any> {
       return (
         <div>
           <p>You completed the diagnostic and have been recommended {this.props.recommendations.length} activities.</p>
-          <button onClick={this.props.toggleFilterRecommendations}>{this.props.filterRecommendations ? "Show all activities" : "Show only recommendations"}</button>
+          <button style={styles.cardButton} onClick={this.props.toggleFilterRecommendations}>{this.props.filterRecommendations ? "Show All Activities" : "Show My Recommendations"}</button>
         </div>
       )
     } else {
@@ -28,7 +28,7 @@ class Diagnostic extends React.Component<DiagnosticProps, any> {
   }
 
   render() {
-    const header = this.props.completedDiagnostic ? "You've completed the diagnostic!" : "You should take the diagnostic!"
+    const header = this.props.completedDiagnostic ? "You've Completed The Diagnostic!" : "You Should Take The Diagnostic!"
 
     return (
       <div style={styles.card}>
@@ -52,6 +52,13 @@ const styles = {
     fontSize: 16,
     fontWeight: 600,
     margin: 0,
+  },
+  cardButton: {
+    width: '100%',
+    marginTop: 9,
+    backgroundColor: "#fff",
+    border: "1px solid #737373",
+    color: '#333333',
   }
 }
 
