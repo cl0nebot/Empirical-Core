@@ -14,6 +14,12 @@ class Types::UserType < Types::BaseObject
   field :recommended_activities, [Int], null: true
   field :completed_diagnostic, Boolean, null: false
 
+  field :number_of_completed_activities, Int, null: false
+
+  def number_of_completed_activities
+    ActivitySession.where(user_id: object.id, state: "finished").length
+  end
+
   def notifications
     object.notifications.order("created_at DESC").limit(10)
   end
