@@ -1,7 +1,7 @@
 import React from 'react'
 
 export interface StatsProps {
-  
+  numberOfCompletedActivities: number
 }
 
 class Stats extends React.Component<StatsProps, any> {
@@ -10,7 +10,7 @@ class Stats extends React.Component<StatsProps, any> {
       <div style={styles.card}>
         <h3 style={styles.cardTitle}>Stats</h3>
         <hr/>
-        <p>Statty</p>
+        <p>Completed activities: {this.props.numberOfCompletedActivities}</p>
       </div>
     )
   }
@@ -23,7 +23,6 @@ const styles = {
     padding: 15,
     marginBottom: 40,
     marginLeft: 20,
-    flexGrow: '1',
   },
   cardTitle: {
     fontSize: 16,

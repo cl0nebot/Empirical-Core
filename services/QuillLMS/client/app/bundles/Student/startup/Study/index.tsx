@@ -19,6 +19,7 @@ const selfStudyQuery = `
       }
       recommendedActivities
       completedDiagnostic
+      numberOfCompletedActivities
     }
 
     activityCategories {
@@ -71,6 +72,7 @@ export interface User {
   activityScores: ActivityScore[]
   recommendedActivities: number[]
   completedDiagnostic: boolean
+  numberOfCompletedActivities: number
 }
 
 export interface SelfStudyQueryResponse {
@@ -89,6 +91,7 @@ export interface StudyProps {
 
 export interface StudyState {
   filterRecommendations: boolean
+  openCategories: boolean
 }
 
 
@@ -97,15 +100,23 @@ class SelfStudyContainer extends React.Component<StudyProps, StudyState> {
     super(props)
    
     this.state = {
-      filterRecommendations: false
+      filterRecommendations: false,
+      openCategories: false
     }
 
     this.toggleFilterRecommendations = this.toggleFilterRecommendations.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   toggleFilterRecommendations(): void {
     this.setState({
       filterRecommendations: !this.state.filterRecommendations
+    })
+  }
+
+  handleClick() {
+    this.setState({
+      openCategories: !this.state.openCategories
     })
   }
 
@@ -116,7 +127,7 @@ class SelfStudyContainer extends React.Component<StudyProps, StudyState> {
         <Query
           query={gql(selfStudyQuery)}
         >
-        {({ loading, error, data }) => {
+        {({ loading, error, data }:QueryState ) => {
           if (loading) return <p>Loading...</p>;
           if (error) return <p>Error :(</p>;
           const payload = data;
@@ -129,13 +140,15 @@ class SelfStudyContainer extends React.Component<StudyProps, StudyState> {
                   completedDiagnostic={data.currentUser.completedDiagnostic} 
                   recommendations={data.currentUser.recommendedActivities}
                 />
-                <Stats />
+                <Stats numberOfCompletedActivities={data.currentUser.numberOfCompletedActivities} />
               </div>
+              <button onClick={this.handleClick}>{this.state.openCategories ? `Close Categories`: `Open Categories`}</button>
               <Activities 
                 activities={data.activityCategories} 
                 scores={data.currentUser.activityScores}
                 recommendations={data.currentUser.recommendedActivities}
                 filterRecommendations={this.state.filterRecommendations}
+                openCategories={this.state.openCategories}
               />
             </div>
           )
