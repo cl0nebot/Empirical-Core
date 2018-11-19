@@ -2,6 +2,7 @@ import React from 'react'
 
 export interface StatsProps {
   numberOfCompletedActivities: number
+  lastTimeActivityCompleted: string|null
 }
 
 class Stats extends React.Component<StatsProps, any> {
@@ -11,6 +12,7 @@ class Stats extends React.Component<StatsProps, any> {
         <h3 style={styles.cardTitle}>Stats</h3>
         <hr/>
         <p>Completed activities: {this.props.numberOfCompletedActivities}</p>
+        <p>Your last completed activity was on: {this.props.lastTimeActivityCompleted}</p>
       </div>
     )
   }

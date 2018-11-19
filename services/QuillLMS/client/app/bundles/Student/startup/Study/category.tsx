@@ -7,7 +7,6 @@ export interface CategoryProps {
   category: ActivityCategory
   scores: ActivityScore[]
   recommendations: number[]
-  openCategories: boolean
 }
 
 export interface CategoryState {
@@ -43,9 +42,7 @@ class Category extends React.Component<CategoryProps, CategoryState> {
   }
 
   renderActivities(activities: Activity[], activityOrders: ActivityOrder[]) {
-    console.log(this.props.openCategories)
-    // if (!this.state.open) {return null}
-    if(!this.props.openCategories) {return null}
+    if (!this.state.open) {return null}
     const sortedActivities = activities.slice().sort(function(a, b){
       const a_order_number = activityOrders.find((order) => order.activityId == a.id).orderNumber;
       const b_order_number = activityOrders.find((order) => order.activityId == b.id).orderNumber;

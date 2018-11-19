@@ -6,7 +6,6 @@ export interface ActivitiesProps {
   recommendations: number[];
   scores: ActivityScore[];
   filterRecommendations: boolean;
-  openCategories: boolean;
 }
 
 function filterActivities(activities: Activity[], recommendations: number[]):Activity[] {
@@ -36,7 +35,7 @@ class Activities extends React.Component<ActivitiesProps, any> {
       if (activities.length == 0) {
         return
       }
-      return <Category category={category} scores={this.props.scores} recommendations={this.props.recommendations} key={category.id} openCategories={this.props.openCategories}/>
+      return <Category category={category} scores={this.props.scores} recommendations={this.props.recommendations} key={category.id}/>
     })
   }
 

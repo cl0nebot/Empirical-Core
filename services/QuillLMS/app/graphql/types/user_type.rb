@@ -16,8 +16,14 @@ class Types::UserType < Types::BaseObject
 
   field :number_of_completed_activities, Int, null: false
 
+  field :last_time_activity_completed, String, null: true
+
   def number_of_completed_activities
     ActivitySession.where(user_id: object.id, state: "finished").length
+  end
+
+  def last_time_activity_completed
+    ActivitySession.where(user_id: object.id, state:"finished").order(:completed_at).last.completed_at.to_s
   end
 
   def notifications
