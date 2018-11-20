@@ -31,7 +31,11 @@ import submitQuestionResponse from '../renderForQuestions/submitResponse.js';
 import updateResponseResource from '../renderForQuestions/updateResponseResource.js';
 import submitPathway from '../renderForQuestions/submitPathway.js';
 import AnswerForm from '../renderForQuestions/renderFormForAnswer.jsx';
-import { getOptimalResponses, getSubOptimalResponses, getTopOptimalResponse } from '../../libs/sharedResponseFunctions';
+import {
+  getOptimalResponses,
+  getSubOptimalResponses,
+  getAlgorithmSubOptimalResponses
+} from '../../libs/sharedResponseFunctions';
 import {
   getResponsesWithCallback,
   getGradedResponsesWithCallback
@@ -116,10 +120,21 @@ const playLessonQuestion = React.createClass<any, any>({
     return getSubOptimalResponses(hashToCollection(this.getResponses()));
   },
 
+  getAlgorithmSubOptimalResponses() {
+    return getAlgorithmSubOptimalResponses(hashToCollection(this.getResponses()))
+  },
+
   get4MarkedResponses() {
-    const twoOptimal = _.first(_.shuffle(this.getOptimalResponses()), 2);
-    const twoSubOptimal = _.first(_.shuffle(this.getSubOptimalResponses()), 2);
-    return _.shuffle(twoOptimal.concat(twoSubOptimal));
+    let responses = []
+    const optimalResponses = _.first(_.shuffle(this.getOptimalResponses()), 2);
+    responses = responses.concat(optimalResponses)
+    const subOptimalResponses = _.first(_.shuffle(this.getSubOptimalResponses()), 4 - responses.length);
+    responses = responses.concat(subOptimalResponses)
+    if (responses.length < 4) {
+      const algorithmSubOptimalResponses = _.first(_.shuffle(this.getAlgorithmSubOptimalResponses()), 4 - responses.length);
+      responses = responses.concat(algorithmSubOptimalResponses)
+    }
+    return _.shuffle(responses);
   },
 
   submitResponse(response) {

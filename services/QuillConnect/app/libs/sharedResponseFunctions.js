@@ -8,6 +8,10 @@ export function getSubOptimalResponses(responses) {
   return _.filter(responses, resp => resp.parentID === undefined && resp.feedback !== undefined && resp.optimal !== true);
 }
 
+export function getAlgorithmSubOptimalResponses(responses) {
+  return _.filter(responses, resp => resp.parentID !== undefined && resp.optimal !== true)
+}
+
 export function getTopOptimalResponse(responses) {
   return _.sortBy(getOptimalResponses(responses), r => r.count).reverse(responses)[0];
 }
