@@ -3,11 +3,12 @@ import { hashToCollection } from 'quill-component-library/dist/componentLibrary'
 import * as _ from 'underscore';
 import {checkSentenceCombining, checkDiagnosticQuestion} from 'quill-marking-logic';
 import { getParameterByName } from '../../libs/getParameterByName';
-import { sendActivitySessionInteractionLog } from '../../libs/sendActivitySessionInteractionLog';
+import { getActivitySessionInteractionService } from 'quill-service-library';
 
 
 export default function checkAnswer(question, response, responses, mode='default') {
-  sendActivitySessionInteractionLog(getParameterByName('student'), { info: 'answer check', current_question: question.key })
+  const service = getActivitySessionInteractionService(getParameterByName('student'));
+  service.sendActivitySessionInteractionLog({ info: 'answer check', current_question: question.key })
   const defaultConceptUID = question.modelConceptUID || question.conceptID
   const fields = {
     responses: responses ? hashToCollection(responses) : [],
