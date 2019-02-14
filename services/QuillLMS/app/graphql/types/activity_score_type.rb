@@ -2,7 +2,7 @@ class Types::ActivityScoreType < Types::BaseObject
   graphql_name 'ActivityScore'
 
   field :activity_id, Int, null: false
-  field :percentage, Float, null: false
+  field :percentage, Float, null: true
   field :updated_at, Int, null: false
   field :in_progress, Boolean, null: false
 
