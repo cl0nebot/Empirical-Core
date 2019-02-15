@@ -1,5 +1,5 @@
 import React from 'react';
-import StudentProfile from '../../Teacher/containers/StudentProfile.jsx';
+import StudentProfileRouter from '../../Teacher/containers/StudentProfileRouter.jsx';
 import { Provider } from 'react-redux';
 import studentProfile from '../../../reducers/student_profile';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
@@ -9,9 +9,6 @@ const store = createStore(studentProfile, applyMiddleware(thunk));
 
 export default props => (
   <Provider store={store}>
-    <StudentProfile
-      router={props.router}
-      classroomId={props && props.params ? props.params.classroomId : null}
-    />
+    <StudentProfileRouter />
   </Provider>
 );

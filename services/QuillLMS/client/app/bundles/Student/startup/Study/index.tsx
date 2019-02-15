@@ -1,6 +1,5 @@
 import React from 'react';
-import { ApolloProvider, Query, } from "react-apollo";
-import client from '../../../../modules/apollo';
+import { Query, } from "react-apollo";
 import gql from "graphql-tag";
 import Activities from './activities';
 import Diagnostic from './diagnostic';
@@ -114,7 +113,6 @@ class SelfStudyContainer extends React.Component<StudyProps, StudyState> {
 
   render() {
     return (
-      <ApolloProvider client={client}>
         <div className="container">
         <Query
           query={gql(selfStudyQuery)}
@@ -149,7 +147,6 @@ class SelfStudyContainer extends React.Component<StudyProps, StudyState> {
         }}
           </Query>
         </div>
-      </ApolloProvider>
     );
   };
 

@@ -9,6 +9,7 @@ class Types::UserType < Types::BaseObject
   field :time_zone, String, null: true
 
   field :notifications, [Types::NotificationType], null: true
+  field :classrooms, [Types::ClassroomType], null: false
 
   field :activity_scores, [Types::ActivityScoreType], null: true
   field :recommended_activities, [Int], null: true
@@ -58,6 +59,19 @@ class Types::UserType < Types::BaseObject
 
   def completed_diagnostic
     ActivitySession.where(user_id: object.id, activity_id: 413, state: "finished").any?
+  end
+
+  def classrooms
+    ActiveRecord::Base.connection.execute(
+      "SELECT classrooms.name AS name, teacher.name AS teacher, classrooms.id AS id FROM classrooms
+      JOIN students_classrooms AS sc ON sc.classroom_id = classrooms.id
+      JOIN classrooms_teachers ON classrooms_teachers.classroom_id = sc.classroom_id AND classrooms_teachers.role = 'owner'
+      JOIN users AS teacher ON teacher.id = classrooms_teachers.user_id
+      WHERE sc.student_id = #{object.id}
+      AND classrooms.visible = true
+      AND sc.visible = true
+      ORDER BY sc.created_at ASC"
+    ).to_a
   end
 
   private 
