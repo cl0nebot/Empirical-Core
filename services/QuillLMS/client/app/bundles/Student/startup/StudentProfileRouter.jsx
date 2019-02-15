@@ -9,7 +9,7 @@ import JoinClass from './JoinClassAppClient';
 import Study from './Study/index';
 import { Provider } from 'react-redux';
 import studentProfile from '../../../reducers/student_profile';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 const store = createStore(studentProfile, applyMiddleware(thunk));

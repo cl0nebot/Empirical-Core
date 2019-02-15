@@ -1,9 +1,10 @@
 import React from 'react';
-import StudentsClassroomsHeader from '../../Teacher/components/student_profile/students_classrooms/students_classrooms_header.jsx';
-import NextActivity from '../../Teacher/components/student_profile/next_activity.jsx';
-import NotificationFeed from '../../Teacher/components/student_profile/notification_feed';
-import StudentProfileUnits from '../../Teacher/components/student_profile/student_profile_units.jsx';
-import StudentProfileHeader from '../../Teacher/components/student_profile/student_profile_header';
+import { Query, } from 'react-apollo';
+import gql from 'graphql-tag';
+import NextActivity from './components/next_activity.jsx';
+import NotificationFeed from './components/notification_feed';
+import StudentProfileUnits from './components/student_profile_units.jsx';
+import StudentProfileHeader from './components/student_profile_header';
 import Pusher from 'pusher-js';
 import { connect } from 'react-redux';
 import {
@@ -15,6 +16,39 @@ import {
   hideDropdown,
   toggleDropdown
 } from '../../../actions/student_profile';
+
+const classroomAssignmentsQuery = gql`
+  query classroomAssignments($classroomId: String){
+    currentUser {
+      name
+      classroom(id: $classroomId) {
+        id
+        name
+        teacher
+        assignments {
+          name
+          description
+          repeatable
+          activityClassificationId
+          unitId
+          uaId
+          unitCreatedAt
+          unitName
+          caId
+          markedComplete
+          activityId
+          actSeshUpdatedAt
+          dueDate
+          unitActivityCreatedAt
+          locked
+          pinned
+          maxPercentage
+          resumeLink
+        }
+      }
+    }
+  }
+`;
 
 class StudentProfile extends React.Component {
   constructor(props) {
@@ -96,45 +130,45 @@ class StudentProfile extends React.Component {
 
   render() {
     const {
-      classrooms,
       notifications,
-      numberOfClassroomTabs,
-      student,
-      selectedClassroomId,
-      hideDropdown,
-      toggleDropdown,
-      showDropdown,
       nextActivitySession,
       loading,
       scores,
     } = this.props;
 
-    if (!loading) {
-      const nextActivity = nextActivitySession ? (<NextActivity
-        loading={loading}
-        hasActivities={scores.length > 0}
-        name={nextActivitySession.name}
-        caId={nextActivitySession.ca_id}
-        activityId={nextActivitySession.activity_id}
-        activityClassificationId={nextActivitySession.activity_classification_id}
-        maxPercentage={nextActivitySession.max_percentage}
-      />) : null;
-      return (
-        <div id="student-profile-assignments">
-          <StudentProfileHeader
-            studentName={student.name}
-            classroomName={student.classroom.name}
-            teacherName={student.classroom.teacher.name}
-          />
-          <NotificationFeed notifications={notifications} />
-          {nextActivity}
-          <StudentProfileUnits
-            data={scores}
-            loading={loading}
-          />
-        </div>
-      );
-    } return <span />;
+    const nextActivity = nextActivitySession ? (<NextActivity
+      loading={loading}
+      hasActivities={scores.length > 0}
+      name={nextActivitySession.name}
+      caId={nextActivitySession.ca_id}
+      activityId={nextActivitySession.activity_id}
+      activityClassificationId={nextActivitySession.activity_classification_id}
+      maxPercentage={nextActivitySession.max_percentage}
+    />) : null;
+    return (
+      <Query query={classroomAssignmentsQuery} variables={{ classroomId: this.props.params.classroomId, }}>
+        {({ loading, error, data, }) => {
+          if (loading) return <p>Loading...</p>;
+          if (error) return <p>Error :(</p>;
+          const student = data.currentUser;
+          return (
+            <div id="student-profile-assignments">
+              <StudentProfileHeader
+                studentName={student.name}
+                classroomName={student.classroom.name}
+                teacherName={student.classroom.teacher}
+              />
+              <NotificationFeed notifications={notifications} />
+              {/* {nextActivity} */}
+              <StudentProfileUnits
+                data={student.classroom.assignments}
+                loading={false}
+              />
+            </div>
+          );
+        }}
+      </Query>
+    );
   }
 }
 

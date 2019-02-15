@@ -10,6 +10,9 @@ class Types::UserType < Types::BaseObject
 
   field :notifications, [Types::NotificationType], null: true
   field :classrooms, [Types::ClassroomType], null: false
+  field :classroom, Types::ClassroomType, null: true do
+    argument :id, String, required: false
+  end
 
   field :activity_scores, [Types::ActivityScoreType], null: true
   field :recommended_activities, [Int], null: true
@@ -72,6 +75,15 @@ class Types::UserType < Types::BaseObject
       AND sc.visible = true
       ORDER BY sc.created_at ASC"
     ).to_a
+  end
+
+  def classroom(id: nil)
+    classroom = object.classrooms.where(id: id).first
+    return {
+      id: classroom.id,
+      teacher: classroom.owner.name,
+      name: classroom.name
+    }
   end
 
   private 
