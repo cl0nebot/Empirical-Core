@@ -9,12 +9,25 @@ class ProgressReports::DistrictConceptReports
     # Uncomment the line below, and comment out the active record line
     # in order to bypass the database while testing
     # [{"school_name"=>"Hogwarts", "teacher_name"=>"Severus Snape", "classroom_name"=>"Potions III", "student_name"=>"Ron Weasley", "correct"=>"15", "incorrect"=>"8", "percentage"=>"65"}]
-    ActiveRecord::Base.connection.execute(query).to_a
+    teacher_ids = ActiveRecord::Base.connection.execute("
+      SELECT
+        teachers.id
+      FROM schools_admins
+      JOIN schools ON schools.id = schools_admins.school_id
+      JOIN schools_users on schools_users.school_id = schools.id
+      JOIN users AS teachers on teachers.id = schools_users.user_id
+      WHERE schools_admins.user_id = #{@admin_id}
+    ").to_a.map { |id| id["id"] }
+    results = []
+    teacher_ids.each do |id|
+      results.push(ActiveRecord::Base.connection.execute(query(id)).to_a)
+    end
+    results.flatten
   end
 
   private
 
-  def query
+  def query(teacher_id)
     <<~SQL
     WITH results AS (
     SELECT
@@ -39,6 +52,7 @@ class ProgressReports::DistrictConceptReports
         JOIN concept_results ON concept_results.activity_session_id =
           activity_sessions.id
         WHERE schools_admins.user_id = #{@admin_id}
+        AND teachers.id = #{id}
         GROUP BY student_id, teacher_name, classroom_name, school_name
     )
     SELECT
